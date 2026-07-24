@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lab Report Author"
+  short_description: "Write evidence-backed lab and practice reports"
+  default_prompt: "Use $lab-report-author to complete this experiment with real operational evidence and produce a verified DOCX report."
