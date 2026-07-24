@@ -57,12 +57,27 @@ Extract:
 
 - required sections and grading prompts;
 - identity fields the user wants filled;
+- teacher, technical-title, unit, and class fields explicitly supplied by the user;
 - target software, operating system, data, topology, and expected output;
 - evidence required for each result;
 - limits on length, dates, naming, and file format;
 - facts that must come from the user or a cited public source.
 
-State competing interpretations when they change the experiment. Ask only when missing information blocks execution or would cause fabricated content. Leave teacher signatures, scores, and approval fields untouched unless explicitly supplied.
+State competing interpretations when they change the experiment. Ask only when missing information blocks execution or would cause fabricated content. Leave teacher signatures, scores, and approval fields untouched unless explicitly supplied. When the user supplies a teacher or technical title, fill the matching fields consistently in the task sheet and report information table. Keep a supplied or inferred job title short, ordinary, and aligned with the performed work.
+
+Resolve the submission filename before assembly. Follow an explicit school or class naming example first. Otherwise use a factual pattern such as `学号+姓名+报告类型.docx`; do not leave an internal project title as the delivered filename.
+
+## Lock the Word format contract
+
+Before drafting into a supplied DOCX, distill the template and record exact values for:
+
+- paper size, orientation, margins, section breaks, and header/footer distance;
+- table rows, columns, merged cells, widths, and signature areas;
+- Chinese and Latin fonts, body and heading sizes, weight, alignment, and first-line indent;
+- body, heading, code, figure, and caption line spacing and paragraph spacing;
+- image width rules, caption position, page numbering, and final filename.
+
+Treat these values as build inputs. If the template requires 1.5 line spacing, set an explicit numeric `1.5` on the relevant paragraphs and verify it in the produced DOCX. Do not reduce the required line spacing to make the report shorter. To remove an orphaned last page, first remove unintended paragraph or figure spacing, then adjust evidence image width while preserving legibility, and only then shorten redundant prose.
 
 ## Inspect and choose the environment
 
@@ -89,7 +104,7 @@ Read [evidence-and-screenshots.md](references/evidence-and-screenshots.md). Map 
 - the application, terminal, host, or virtual machine to capture;
 - the intended section and figure caption.
 
-Capture meaningful milestones, not every click. A simple experiment normally needs two to four figures. Preserve original screenshots and packet captures. Use generated images only for explanatory diagrams, never as proof that software was run.
+Capture meaningful milestones, not every click. A simple experiment normally needs two to four figures. A professional-practice report can use four to six figures when they cover distinct work stages such as task input, visible result, artifact properties, complete flow, field verification, and disposition. Preserve original screenshots and packet captures. Use generated images only for explanatory diagrams, never as proof that software was run.
 
 After capture, run:
 
@@ -123,6 +138,16 @@ Do not add generic sections such as “测试场景与数据边界”“保密�
 
 For `--kind practice`, frame the report as assigned work rather than a longer experiment: task intake, object and known fields, execution, judgment basis, result record, and work-related reflection. Do not discuss screenshot layout in the report, and do not add a decorative company-homepage source.
 
+For packet-based security practice, prefer a non-repeating evidence set:
+
+1. visible service or task result;
+2. capture-file properties showing interface, capture filter, packet count, drops, or hash;
+3. complete connection sequence;
+4. request fields;
+5. response fields and timing.
+
+Use fewer figures when one screen already proves two adjacent claims. Never mix screenshots from captures with different addresses, ports, filenames, or environments.
+
 Keep theory proportional to the assignment. Write in a natural student voice grounded in performed work. Do not add deliberate errors or attempt to game detector software.
 
 For code, implement only the requested behavior. Avoid unused abstractions, speculative configuration, defensive branches for impossible inputs, and comments that restate the code.
@@ -137,8 +162,11 @@ Render the latest DOCX and inspect every page at 100% zoom. Repeat until:
 
 - screenshots are legible and aligned with their captions;
 - no page contains clipping, overlap, broken tables, missing glyphs, or unintended blank space;
+- no final page contains only a carried-over sentence, caption, or signature row;
 - headings, numbering, fonts, margins, headers, and footers match the template;
+- measured line spacing, paragraph spacing, first-line indent, image width, and table geometry match the recorded format contract;
 - dates, names, commands, paths, IP addresses, frame numbers, figure numbers, results, and conclusions agree;
+- the delivered filename follows the requested submission pattern;
 - no credentials, workplace data, or unrelated personal information are exposed.
 
 Deliver only the requested final artifact unless the user asks for source files or QA intermediates.

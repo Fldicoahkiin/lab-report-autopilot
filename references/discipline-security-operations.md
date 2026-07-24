@@ -31,16 +31,18 @@ Do not reproduce a real customer event. Create a new local scenario with synthet
 1. Scope and environment.
 2. Initial indicator or alert.
 3. Host, process, user, network, and time context.
-4. Verification using a second data source.
-5. Decision: true positive, benign activity, false positive, or unresolved.
-6. Containment or configuration change when the exercise permits it.
-7. Post-change verification.
+4. Saved-artifact properties or statistics.
+5. Verification using a second view or data source.
+6. Decision: true positive, benign activity, false positive, or unresolved.
+7. Containment or configuration change when the exercise permits it.
+8. Post-change verification.
 
 ## Minimum evidence
 
 - Authorized target and lab boundary.
 - Original synthetic indicator.
 - Commands or UI used to investigate it.
+- Artifact identity, capture filter, event count, drops, checksum, or equivalent integrity value when applicable.
 - A short timeline.
 - Decision criteria.
 - Before/after verification.

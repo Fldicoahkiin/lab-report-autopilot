@@ -17,6 +17,7 @@ Do not draft a success claim until its proof exists.
 - Keep the command, relevant parameters, and result visible together when possible.
 - For GUI configuration, capture the final field values and the resulting behavior, not only the settings dialog.
 - For a simple experiment, keep two to four figures that cover the main procedure and result.
+- For professional practice, use four to six figures only when each one proves a different work stage. A useful sequence is visible task result, artifact properties, complete operation, field-level verification, and final result.
 - Preserve failed-state screenshots in working files only when they explain an adaptation. Do not place a resolved permission or startup error in the finished report unless it affects the result.
 - Use a clear filename sequence such as `01-environment.png`, `02-query-result.png`, and `03-verification.png`.
 
@@ -66,6 +67,8 @@ Review:
 - Number figures in first-reference order.
 - When a packet filter leaves only one or two rows, drag the horizontal pane divider upward so the decoded protocol fields use the empty space below the packet list.
 - For a full-flow packet figure, leave enough list height to show the connection sequence. For request or response figures, favor the decoded-field pane.
+- When a saved artifact matters to the judgment, capture its properties or statistics: filename, interface, capture filter, packet count, drops, checksum, query row count, build result, or equivalent integrity signal.
+- Keep every figure in one value system. Do not combine evidence from separate runs when addresses, ports, filenames, versions, timestamps, or task identifiers differ.
 
 An explanation should read like:
 
