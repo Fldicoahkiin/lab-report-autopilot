@@ -78,6 +78,8 @@ If the required environment does not exist, stop that portion and report the blo
 
 For networking and security work, operate only against local virtual machines, course labs, deliberately vulnerable targets, or systems the user is authorized to test.
 
+Keep environment discovery and troubleshooting in working notes. The finished report normally names only the operating system and tools used in the successful procedure. Include a permission fix, failed attempt, or environment substitution only when it changes the submitted result or the assignment explicitly asks for it.
+
 ## Plan and collect evidence
 
 Read [evidence-and-screenshots.md](references/evidence-and-screenshots.md). Map each report claim to:
@@ -87,7 +89,7 @@ Read [evidence-and-screenshots.md](references/evidence-and-screenshots.md). Map 
 - the application, terminal, host, or virtual machine to capture;
 - the intended section and figure caption.
 
-Capture meaningful milestones, not every click. Preserve original screenshots and packet captures. Use generated images only for explanatory diagrams, never as proof that software was run.
+Capture meaningful milestones, not every click. A simple experiment normally needs two to four figures. Preserve original screenshots and packet captures. Use generated images only for explanatory diagrams, never as proof that software was run.
 
 After capture, run:
 
@@ -102,21 +104,22 @@ Resolve corrupt images, accidental duplicates, unreadable dimensions, secret exp
 1. Create the smallest setup that satisfies the assignment.
 2. Run every submitted command and code path.
 3. After each material GUI action, inspect the fresh application state before continuing.
-4. Record exact commands, inputs, filenames, versions, IP addresses, observed output, failed attempts, and environment adaptations.
+4. Record exact commands, inputs, filenames, versions, IP addresses, observed output, failed attempts, and environment adaptations in working notes.
 5. Capture the state that proves the claimed result.
 6. Keep security experiments isolated and non-destructive.
 
-If the requested method fails, document the real cause, try an allowed equivalent, and explain the substitution. Do not rewrite failure as success.
+If the requested method fails, document the real cause in working notes and try an allowed equivalent. In the report, explain the substitution only when the reader must know it to understand the submitted result. Do not rewrite an unresolved failure as success.
 
 ## Draft from evidence
 
-Read [writing-and-code.md](references/writing-and-code.md). Write each practical step as:
+Read [writing-and-code.md](references/writing-and-code.md). For a short course experiment, write each practical step with only the parts that help the reader follow the operation:
 
-1. **Purpose:** what the step verifies or changes.
-2. **Action:** the actual command, code, configuration, or UI operation.
-3. **Evidence:** the screenshot or output after the relevant explanation.
-4. **Observation:** exact values visible in the evidence.
-5. **Interpretation:** why the result satisfies the task or what remains unresolved.
+1. **Action:** the actual command, code, configuration, or UI operation.
+2. **Result:** the exact visible value or behavior.
+3. **Evidence:** the screenshot placed near the matching text.
+4. **Short explanation:** why the result is correct when it is not already obvious.
+
+Do not add generic sections such as “测试场景与数据边界”“保密边界”“证据链” or a long debugging record unless the template or assignment requires them. Keep the finished report close to the reference reports' step density and wording level.
 
 Keep theory proportional to the assignment. Write in a natural student voice grounded in performed work. Do not add deliberate errors or attempt to game detector software.
 

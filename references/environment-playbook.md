@@ -23,6 +23,13 @@ Run `scripts/probe_environment.py --json`, then inventory the named software and
 7. Keep host and guest roles explicit in notes and captions.
 8. Use macOS-native alternatives only when they preserve the assignment's learning objective.
 
+For Wireshark capture permission on macOS:
+
+1. Use the official Wireshark ChmodBPF component when it is installed.
+2. If the task is authorized for administrator access, repair the capture permission with the official helper or run the bounded capture command with `sudo`.
+3. Never save, print, or place an administrator password in notes, commands, screenshots, or the report.
+4. After capture works, write only the successful capture step in the report unless permission setup is itself part of the assignment.
+
 When controlling Parallels:
 
 1. Capture the guest name and current power state.
@@ -50,7 +57,7 @@ When using Computer Use:
 
 ## Environment substitutions
 
-Write an environment note when a different tool or OS is used. Keep it factual:
+Write an environment note only when a different tool or OS remains visible in the submitted procedure or changes the result. Keep it factual:
 
 > 原实验要求使用 Hydra 对 RDP 进行测试。本机 macOS 版本未提供对应模块，Kali 虚拟机中的旧版 FreeRDP 也无法与目标协商连接，因此改用 Windows 11 靶机和 NetExec 完成同一弱口令验证。后续步骤和结果均以该环境为准。
 
@@ -62,4 +69,4 @@ Include:
 - why the substitute still tests the intended concept;
 - any output difference the reader will see.
 
-Do not claim the original software succeeded after switching tools.
+Do not claim the original software succeeded after switching tools. If the native method is repaired and used for the final evidence, omit earlier abandoned routes from the report.

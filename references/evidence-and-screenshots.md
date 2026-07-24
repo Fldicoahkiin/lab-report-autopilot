@@ -16,8 +16,8 @@ Do not draft a success claim until its proof exists.
 - Include enough application context to identify the software and target.
 - Keep the command, relevant parameters, and result visible together when possible.
 - For GUI configuration, capture the final field values and the resulting behavior, not only the settings dialog.
-- For multi-stage work, capture setup, one diagnostic checkpoint, and the final result.
-- Preserve failures that explain a real adaptation or troubleshooting decision.
+- For a simple experiment, keep two to four figures that cover the main procedure and result.
+- Preserve failed-state screenshots in working files only when they explain an adaptation. Do not place a resolved permission or startup error in the finished report unless it affects the result.
 - Use a clear filename sequence such as `01-environment.png`, `02-query-result.png`, and `03-verification.png`.
 
 Avoid:
@@ -64,6 +64,8 @@ Review:
 - Use one large figure instead of two small figures when terminal or UI text would otherwise become unreadable.
 - Crop empty margins, but retain application and target context.
 - Number figures in first-reference order.
+- When a packet filter leaves only one or two rows, drag the horizontal pane divider upward so the decoded protocol fields use the empty space below the packet list.
+- For a full-flow packet figure, leave enough list height to show the connection sequence. For request or response figures, favor the decoded-field pane.
 
 An explanation should read like:
 

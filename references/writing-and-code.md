@@ -29,25 +29,27 @@ Condense the task into two to five measurable objectives. Preserve mandatory wor
 
 ### Environment
 
-Record only details that affect reproducibility:
+Keep this section short. Record only details used by the successful procedure:
 
-- host and guest operating systems;
-- application or runtime versions;
-- network mode and role assignment;
+- operating system when it affects commands or screenshots;
+- application or runtime versions when useful;
 - input data, topology, or dataset;
-- environment substitutions.
+- a visible environment substitution only when it changes the submitted steps.
+
+Do not narrate tool probing, capture-permission repair, virtual-machine startup, or abandoned approaches after the final method works. Keep those details in working notes.
 
 ### Process and result analysis
 
 For each task unit:
 
-1. state the immediate purpose;
-2. show the minimal command, code, or configuration;
-3. place the real screenshot;
-4. identify the exact visible result;
-5. explain why it is correct or what failed.
+1. show the minimal command, code, or configuration;
+2. identify the exact visible result;
+3. place the real screenshot near the matching text;
+4. add a short explanation only when the result is not self-explanatory.
 
-Mention a failed attempt when it caused a meaningful change in method. Do not invent troubleshooting to make the report look detailed.
+Mention a failed attempt only when the final method, result, or grading evidence depends on it. A resolved permission problem or discarded trial normally stays out of the report. Do not invent troubleshooting to make the report look detailed.
+
+Do not create generic sections named “测试场景与数据边界”“保密与复现边界”“证据链” or similar unless the assignment requests them. Put any necessary constraint into one short sentence near the relevant operation.
 
 ### Summary or reflection
 
