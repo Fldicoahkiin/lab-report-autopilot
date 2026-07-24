@@ -1,4 +1,4 @@
 interface:
-  display_name: "Lab Report Author"
-  short_description: "Write evidence-backed lab and practice reports"
-  default_prompt: "Use $lab-report-author to complete this experiment with real operational evidence and produce a verified DOCX report."
+  display_name: "Lab Report Autopilot"
+  short_description: "Run experiments and produce evidence-backed reports"
+  default_prompt: "Use $lab-report-autopilot to perform this assignment, capture real evidence, and deliver a verified report."

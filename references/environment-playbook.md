@@ -16,10 +16,21 @@ Run `scripts/probe_environment.py --json`, then inventory the named software and
 
 1. Check native binaries and apps first.
 2. Use Computer Use for applications whose visible state is part of the evidence.
-3. Prefer an existing UTM, Parallels, VMware Fusion, or VirtualBox VM for Windows-only work.
-4. Confirm VM network mode before networking experiments. Record NAT, bridged, host-only, and relevant IP addresses.
-5. Keep host and guest roles explicit in notes and captions.
-6. Use macOS-native alternatives only when they preserve the assignment's learning objective.
+3. Prefer native Terminal, Wireshark, Python, compilers, database clients, and browsers when they satisfy the assignment.
+4. When native tools do not satisfy it, prefer an existing Parallels guest before installing another virtualization stack.
+5. Use Kali in Parallels for Linux networking and security tools. Use a Windows guest for Windows commands, dialogs, and vendor software.
+6. Confirm VM network mode before networking experiments. Record NAT, bridged, host-only, and relevant IP addresses.
+7. Keep host and guest roles explicit in notes and captions.
+8. Use macOS-native alternatives only when they preserve the assignment's learning objective.
+
+When controlling Parallels:
+
+1. Capture the guest name and current power state.
+2. Start the existing guest; do not create a new VM unless the task requires it.
+3. Inspect the guest desktop before running commands.
+4. Keep the Parallels window frame visible in environment evidence when the guest identity matters.
+5. Capture application content inside the guest at a readable scale.
+6. Shut down or suspend the guest only when the user requested it or the task normally requires it.
 
 When using Computer Use:
 
