@@ -51,6 +51,22 @@ Mention a failed attempt only when the final method, result, or grading evidence
 
 Do not create generic sections named “测试场景与数据边界”“保密与复现边界”“证据链” or similar unless the assignment requests them. Put any necessary constraint into one short sentence near the relevant operation.
 
+### Professional practice reports
+
+Do not write a professional practice report as a longer laboratory report. Organize it around work:
+
+1. receive and clarify the assigned task;
+2. identify the object, known fields, and questions to verify;
+3. perform the operation and record the observed values;
+4. make a bounded judgment from those values;
+5. record the disposition, handoff, or retained material.
+
+Use work subjects such as task, asset, connection, record, result, judgment basis, and disposition when they match the performed work. Avoid repeatedly saying that the student “learned the software” or “verified the experiment.” If a local reconstruction is used, state that fact briefly without making environment justification the main section.
+
+Write reflection about limits of the work itself: missing asset context, endpoint telemetry, production scale, protocol coverage, or handoff information. Do not use reflection to discuss screenshot size, page layout, report writing, or other presentation choices unless documentation was the assigned work.
+
+Add a source list only when the template requires one or the report relies on external facts that are actually cited. Do not attach a company homepage as a decorative source.
+
 ### Summary or reflection
 
 Use these ranges as defaults, then follow explicit template limits:

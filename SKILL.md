@@ -121,6 +121,8 @@ Read [writing-and-code.md](references/writing-and-code.md). For a short course e
 
 Do not add generic sections such as “测试场景与数据边界”“保密边界”“证据链” or a long debugging record unless the template or assignment requires them. Keep the finished report close to the reference reports' step density and wording level.
 
+For `--kind practice`, frame the report as assigned work rather than a longer experiment: task intake, object and known fields, execution, judgment basis, result record, and work-related reflection. Do not discuss screenshot layout in the report, and do not add a decorative company-homepage source.
+
 Keep theory proportional to the assignment. Write in a natural student voice grounded in performed work. Do not add deliberate errors or attempt to game detector software.
 
 For code, implement only the requested behavior. Avoid unused abstractions, speculative configuration, defensive branches for impossible inputs, and comments that restate the code.
