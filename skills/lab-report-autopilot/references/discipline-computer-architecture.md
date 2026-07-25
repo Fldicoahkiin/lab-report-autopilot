@@ -3,7 +3,7 @@
 ## Environment route
 
 - Use the named circuit, CPU, assembly, or HDL simulator.
-- Use a Windows guest in Parallels for Windows-only teaching software.
+- Prefer its native Windows build for common Windows-only teaching software. On another host, use any available Windows VM or authorized remote lab.
 - Record simulator version, project file, clock or step mode, input values, and component names.
 
 ## Execution sequence

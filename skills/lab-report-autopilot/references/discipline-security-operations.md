@@ -4,7 +4,7 @@
 
 Use only local virtual machines, course ranges, deliberately vulnerable images, synthetic logs, or systems the user is authorized to test. Keep the network isolated when an exercise includes vulnerable services or malware-like indicators.
 
-Read [confidential-work.md](confidential-work.md) when the task comes from workplace experience.
+Read [user-data-and-privacy.md](user-data-and-privacy.md) when the task comes from workplace experience.
 
 ## Safe practice themes
 
@@ -21,9 +21,9 @@ Do not reproduce a real customer event. Create a new local scenario with synthet
 
 ## Environment route
 
-- Use macOS Terminal for local inventory, hashing, DNS, connection, and packet-analysis work.
-- Use Kali in Parallels for Linux security tools and an isolated analyst host.
-- Use a Windows guest for Defender, Event Viewer, PowerShell, registry, service, or endpoint screenshots.
+- Use native Windows for Defender, Event Viewer, PowerShell, registry, service, and endpoint screenshots.
+- Use Linux or Kali for Linux security tools and an isolated analyst host.
+- Use macOS only for supported local inventory, hashing, DNS, connection, and packet-analysis work.
 - Record VM network mode, snapshots, host roles, IP addresses, test accounts, and the authorized target range.
 
 ## Evidence sequence

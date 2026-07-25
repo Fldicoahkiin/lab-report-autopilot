@@ -1,6 +1,6 @@
-# Confidential workplace material
+# User-supplied and private material
 
-Use workplace material to identify a general competency, not as report content to copy.
+The user's template, identity fields, dates, school details, organization details, and handling instructions control what may be written. Fill supplied values exactly and do not guess missing personal information.
 
 ## Separate three fact classes
 
@@ -8,7 +8,7 @@ Use workplace material to identify a general competency, not as report content t
 | --- | --- |
 | Public fact | Cite the current official or public source |
 | User-confirmed personal fact | Use only where the user authorizes it |
-| Confidential workplace fact | Replace with a general description or a local reproduction |
+| Private workplace fact | Use only as authorized; otherwise replace it with a general description or a local reproduction |
 
 Never move customer names, internal hostnames, IP addresses, alert details, asset identifiers, staff names, screenshots, credentials, ticket text, file paths, or private datasets into the report repository.
 
@@ -17,7 +17,7 @@ Never move customer names, internal hostnames, IP addresses, alert details, asse
 1. Name the general skill involved, such as endpoint inventory, suspicious outbound-connection review, false-positive analysis, weak-password remediation, or alert triage.
 2. Build a new exercise with public data, synthetic logs, or the user's own local virtual machines.
 3. Reproduce the method, not the production event.
-4. Capture new evidence from macOS, Kali, or Windows in the local lab.
+4. Capture new evidence from Windows, Linux, or macOS in the local lab.
 5. State the boundary in the report:
 
 > 为避免接触真实业务数据，以下步骤在本地隔离环境中复现同类处理流程，截图与结果均来自本次自建实验。

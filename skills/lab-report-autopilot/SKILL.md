@@ -1,13 +1,14 @@
 ---
 name: lab-report-autopilot
-description: Run and document computing lab, training, coursework, and professional-practice assignments from supplied instructions, reference reports, and DOCX templates. Use when Codex must inspect macOS, Windows, Kali, or Parallels; operate terminals or GUI tools; capture actual screenshots or packet files; write simple course code; analyze results; and return a checked report for networking, cybersecurity, databases, programming, data visualization, web development, or computer architecture.
+description: Complete Chinese university computing lab, training, coursework, and professional-practice reports from the user's instructions, identity fields, reference reports, and DOCX template. Use when an agent must choose a Windows, Linux, or macOS environment; operate terminals or GUI software; run simple course code; capture actual screenshots or packet files; analyze results; preserve the supplied Word format; and return a checked report for networking, cybersecurity, databases, programming, data visualization, web development, or computer architecture.
+license: MIT
 ---
 
 # Lab Report Autopilot
 
-Complete reports from actual work: read the assignment, run the experiment, keep the useful results, write into the supplied template, and inspect the finished DOCX.
+Drive the report from assignment to delivery: inspect the files, choose the environment, run the experiment, capture the useful results, fill the user's template, and inspect the finished DOCX. Once the required files and personal fields are available, continue without asking the user to perform routine steps.
 
-Never invent software output, screenshots, workplace activity, citations, or environment details. Stop when a missing environment or missing fact would force fabrication.
+Never invent software output, screenshots, user details, citations, or environment values. Interrupt only when an unavailable environment, missing authorization, or missing required field would make the report false.
 
 ## Set up
 
@@ -38,7 +39,7 @@ Classify each input before writing:
 - **Good reference:** shows useful step length, wording, or screenshot placement.
 - **Counterexample:** shows problems to avoid.
 - **Task material:** supplies the required data, code, topology, and expected result.
-- **Confidential material:** supplies only a general work direction. Read [confidential-work.md](references/confidential-work.md).
+- **Private material:** follows the user's handling instructions and supplies only authorized facts. Read [user-data-and-privacy.md](references/user-data-and-privacy.md).
 
 Learn the pattern, not another person's identity or results. Do not copy names, screenshots, addresses, private records, or first-person claims.
 
@@ -54,7 +55,7 @@ Record:
 - the visible result needed for each submitted claim;
 - length, date, filename, and file-format rules.
 
-Ask only when a missing answer blocks the work or would make the report false. Leave signatures, scores, and approval fields empty unless the user explicitly provides them. Do not reuse a filename pattern from an unrelated report.
+Fill names, student numbers, class, teacher, organization, role, dates, and other fields only from values the user supplies or confirms. Use the same value everywhere it appears. Ask once for missing fields that the template requires. Leave signatures, scores, and approval fields empty unless the user explicitly provides them. Do not reuse a filename pattern from an unrelated report.
 
 Before editing Word, read [docx-qa.md](references/docx-qa.md) and measure the supplied template: paper size, margins, tables, fonts, sizes, line spacing, indents, image widths, captions, headers, footers, and page numbering. These measured values control the output.
 
@@ -66,7 +67,7 @@ Read [environment-playbook.md](references/environment-playbook.md), then inspect
 python3 "$SKILL_DIR/scripts/probe_environment.py" --json
 ```
 
-On macOS, use installed native tools first. Use an existing Parallels guest when the assignment needs Windows or Linux. Prefer Kali for Linux networking and security work; use Windows when the required interface or vendor software is Windows-only.
+Do not assume the author's computer or virtualization product. Follow the operating system and software named by the assignment. For common Chinese university coursework, treat Windows as the main route for Office, PowerShell, SQL Server, eNSP, vendor simulators, and Windows-only teaching software. Use Linux or Kali for Linux networking and security tools. Use macOS natively only when the named software and required screenshots remain equivalent; otherwise use any available Windows or Linux VM, container, WSL, or authorized remote lab.
 
 Keep permission fixes and failed attempts in working notes unless they change the submitted result. Security work must stay inside local labs, course systems, deliberately vulnerable targets, or other authorized systems.
 
@@ -104,7 +105,7 @@ For code, implement only the requested behavior. Do not add unused abstractions,
 
 ## Build and check the DOCX
 
-Use the `documents` skill for DOCX reading, editing, rendering, and page inspection. Fill the supplied template in place. Remove sample text only where the report content replaces it.
+Use the host agent's document tools when available; otherwise use compatible DOCX tooling and a real renderer. Fill the supplied template in place. Remove sample text only where the report content replaces it.
 
 Render the latest DOCX and inspect every page at 100%:
 

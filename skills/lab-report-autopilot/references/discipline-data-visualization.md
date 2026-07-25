@@ -2,8 +2,8 @@
 
 ## Environment route
 
-- Use native Python, spreadsheet software, or the named visualization tool on macOS when supported.
-- Use a Windows guest for Windows-only classroom software.
+- Use the named visualization tool. Prefer native Windows for Excel, Power BI, and Windows-only classroom software.
+- Use Python, browser tools, or another current host only when the assignment accepts the same interface and output.
 - Record dataset source, row count, fields, preprocessing, tool versions, and output format.
 
 ## Build the figure

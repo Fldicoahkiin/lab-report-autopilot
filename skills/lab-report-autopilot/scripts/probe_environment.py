@@ -9,12 +9,18 @@ from pathlib import Path
 
 
 COMMANDS = [
-    "python",
-    "python3",
-    "node",
-    "git",
+    "cmd",
     "powershell",
     "pwsh",
+    "winget",
+    "wsl",
+    "python",
+    "python3",
+    "pip",
+    "pip3",
+    "node",
+    "npm",
+    "git",
     "docker",
     "nmap",
     "tshark",
@@ -22,8 +28,13 @@ COMMANDS = [
     "mysql",
     "psql",
     "g++",
+    "gcc",
     "clang++",
     "java",
+    "javac",
+    "dotnet",
+    "php",
+    "sqlite3",
     "soffice",
 ]
 
@@ -36,12 +47,17 @@ MAC_APPS = [
     "/Applications/Microsoft Word.app",
 ]
 
-WINDOWS_APP_SUFFIXES = [
+WINDOWS_APP_PATTERNS = [
     "Wireshark/Wireshark.exe",
     "Oracle/VirtualBox/VirtualBox.exe",
     "VMware/VMware Workstation/vmware.exe",
-    "Microsoft Office/root/Office16/WINWORD.EXE",
+    "Microsoft Office/root/Office*/WINWORD.EXE",
+    "Microsoft VS Code/Code.exe",
+    "Microsoft SQL Server Management Studio */Common7/IDE/Ssms.exe",
+    "MySQL/MySQL Workbench */MySQLWorkbench.exe",
+    "Cisco Packet Tracer */bin/PacketTracer.exe",
     "Huawei/eNSP/eNSP_Client.exe",
+    "Huawei/eNSP/eNSP.exe",
 ]
 
 
@@ -56,12 +72,13 @@ def installed_apps(system: str) -> list[str]:
         for name in ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA")
         if (value := os.environ.get(name))
     ]
-    return [
+    return sorted({
         str(path)
         for root in roots
-        for suffix in WINDOWS_APP_SUFFIXES
-        if (path := root / suffix).exists()
-    ]
+        for pattern in WINDOWS_APP_PATTERNS
+        for path in root.glob(pattern)
+        if path.is_file()
+    })
 
 
 def inspect_environment() -> dict[str, object]:

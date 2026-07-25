@@ -1,12 +1,17 @@
 from __future__ import annotations
 
 import json
+import os
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 from PIL import Image
+
+SKILL_DIR = Path(__file__).resolve().parents[1] / "skills/lab-report-autopilot"
+sys.path.insert(0, str(SKILL_DIR))
 
 from scripts import evidence_manifest, init_report, probe_environment
 
@@ -60,6 +65,17 @@ class ProbeEnvironmentTests(unittest.TestCase):
         self.assertIn("system", result)
         self.assertIn("commands", result)
         self.assertIn("python3", result["commands"])
+
+    def test_finds_windows_app_from_program_files(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            executable = Path(directory) / "Wireshark/Wireshark.exe"
+            executable.parent.mkdir()
+            executable.touch()
+
+            with patch.dict(os.environ, {"PROGRAMFILES": directory}, clear=True):
+                apps = probe_environment.installed_apps("Windows")
+
+            self.assertEqual(apps, [str(executable)])
 
 
 if __name__ == "__main__":

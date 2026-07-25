@@ -1,162 +1,192 @@
-<p align="center">
-  <img src="assets/readme/hero.svg" alt="lab-report-autopilot：从作业要求到真实操作、截图和 DOCX 报告" width="100%">
-</p>
+<img width="2560" height="800" alt="lab-report-autopilot：大学计算机实验报告全自动做到能交" src="assets/readme/hero.svg">
 
-<p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-0b1220" alt="MIT License"></a>
-  <a href="https://github.com/Fldicoahkiin/lab-report-autopilot/commits/main"><img src="https://img.shields.io/github/last-commit/Fldicoahkiin/lab-report-autopilot?color=0284c7" alt="Last commit"></a>
-  <a href="#支持的课程"><img src="https://img.shields.io/badge/课程包-8-0284c7" alt="8 个课程包"></a>
-</p>
+# lab-report-autopilot
 
-`lab-report-autopilot` 是一个给 Codex 使用的实验报告 Skill。它会先读作业要求和 DOCX 模板，再检查当前电脑、运行实验、保留真实结果，最后写入模板并逐页检查。
+> 把作业要求、学校模板和需要填写的信息交给 Agent。实验、截图、正文、排版和最终 DOCX 由它接着做完。
 
-它适合计算机相关课程的实验、实训和专业实践。重点不在多写几段话，而在于报告里的命令、截图、字段和值确实来自同一次操作。
+[![Agent Skills](https://img.shields.io/badge/Agent_Skills-compatible-17202a?style=flat)](https://agentskills.io/)
+[![Windows first](https://img.shields.io/badge/environment-Windows_first-c9322f?style=flat)](#windows-优先但不写死环境)
+[![8 course packs](https://img.shields.io/badge/course_packs-8-17202a?style=flat)](#支持的课程)
+[![MIT License](https://img.shields.io/badge/license-MIT-17202a?style=flat)](LICENSE)
+
+[安装](#安装) · [怎么使用](#怎么使用) · [自动完成哪些步骤](#自动完成哪些步骤) · [支持的课程](#支持的课程) · [仓库结构](#仓库结构)
+
+很多大学计算机实验，操作十几分钟，截图、写步骤、贴 Word、调行距却能折腾半天。这个 Skill 让 Agent 从任务书开始接手：检查当前电脑，选择能运行的软件环境，完成实验，截下结果，再照学校模板交回 DOCX。
+
+它会真的执行命令、代码和图形软件。报告里的窗口、字段、帧号、查询结果和程序输出来自同一次操作，不靠生成一张“看起来像做过”的截图。
+
+仓库遵循 Agent Skills 目录结构，可装进 Claude Code、Codex、Cursor、GitHub Copilot、Gemini CLI、OpenCode 等支持 Skills 的 Agent。Agent 能控制桌面时，可以直接操作 Word、Wireshark 和课程软件；如果只能使用终端，则使用对应的命令行工具和脚本。
+
+<img width="1600" height="1040" alt="一次真实运行：Wireshark 抓包结果写入匿名 DOCX" src="assets/readme/report-proof.png">
+
+上图来自一次本机 HTTP 抓包：14 帧，`GET /status.json`，响应为 `200 OK`。两张 Wireshark 画面随后写入匿名报告并逐页检查。
 
 ## 安装
 
-使用 [Skills CLI](https://github.com/vercel-labs/skills) 安装到 Codex：
-
-```bash
-npx skills add Fldicoahkiin/lab-report-autopilot -g -a codex
-```
-
-也可以手动安装：
-
-```bash
-git clone https://github.com/Fldicoahkiin/lab-report-autopilot.git \
-  ~/.codex/skills/lab-report-autopilot
-```
-
-图片检查脚本使用 Pillow：
-
-```bash
-python3 -m pip install -r \
-  ~/.codex/skills/lab-report-autopilot/requirements.txt
-```
-
-## 调用
-
-把作业要求、学校模板和参考报告交给 Codex，然后说明要实际完成实验：
+最省事的方式，是把仓库地址发给支持 Agent Skills 的 Agent：
 
 ```text
-Use $lab-report-autopilot to complete this packet-analysis assignment
-from the supplied DOCX template. Run the experiment, capture the actual
-results, and return the checked DOCX.
+请安装并使用这个 Skill：
+https://github.com/Fldicoahkiin/lab-report-autopilot
 ```
 
-也可以直接用中文：
+使用 [Skills CLI](https://github.com/vercel-labs/skills)：
+
+```bash
+npx skills add Fldicoahkiin/lab-report-autopilot -g
+```
+
+使用正在预览的 [GitHub CLI `gh skill`](https://cli.github.com/manual/gh_skill)：
+
+```bash
+gh skill install Fldicoahkiin/lab-report-autopilot lab-report-autopilot \
+  --scope user \
+  --agent universal
+```
+
+`universal` 可以换成 `claude-code`、`codex`、`cursor`、`github-copilot`、`gemini-cli` 等 [GitHub CLI 支持的 Agent ID](https://cli.github.com/manual/gh_skill_install)。
+
+手动安装时，把仓库 clone 到当前 Agent 的用户级 Skills 目录。随后在仓库根目录安装图片检查脚本使用的 Pillow：
+
+```bash
+python3 -m pip install -r skills/lab-report-autopilot/requirements.txt
+```
+
+## 怎么使用
+
+直接把作业文件交给 Agent，并点名这个 Skill：
 
 ```text
-使用 $lab-report-autopilot 完成这份数据库实验。按学校模板排版，
-实际运行 SQL，截取查询和结果，最后交付检查过的 DOCX。
+使用 lab-report-autopilot 完成这份数据库实验。
+严格沿用我提供的 DOCX 模板，实际运行 SQL 并截图。
+姓名、学号、班级和指导教师只填写我给出的值。
+完成后检查每一页，只交付最终 DOCX。
 ```
 
-## 它会做什么
+专业实践也可以直接说明工作方向和允许写入的信息：
 
-| 顺序 | Codex 实际做的事 |
+```text
+使用 lab-report-autopilot 完成专业实践报告。
+实践内容按我提供的任务书和材料来写，需要演示的操作在本地环境完成。
+不要补写我没有提供的单位、岗位、日期或个人信息。
+```
+
+## 先给 Agent 这些
+
+| 输入 | 用来做什么 |
 | --- | --- |
-| 1 | 区分学校模板、参考报告、反例、任务材料和涉密材料 |
-| 2 | 检查 macOS、Windows、Kali、Parallels 以及已安装的软件 |
-| 3 | 运行命令、代码或图形软件，记录画面中出现的真实值 |
-| 4 | 只截与操作和结论有关的画面，保留原始文件 |
-| 5 | 按模板写入 DOCX，检查字体、行距、图片、表格、页码和文件名 |
+| 作业要求或任务书 | 确定实验内容、必答项、软件、日期和文件名 |
+| 学校提供的 DOCX | 保留原有封面、表格、字体、行距、页码和签字栏 |
+| 需要填写的信息 | 姓名、学号、班级、教师、单位、岗位、日期等，提供什么就填什么 |
+| 参考报告 | 学习步骤详略、截图位置和总结长度，不复制别人的身份和结果 |
+| 额外要求 | 指定 Windows、限制篇幅、隐藏信息、截图数量或提交格式 |
 
-需要 Windows 专属界面但电脑里没有可用的 Windows 环境时，Skill 会说明缺少什么，不会用生成图片代替运行结果。
+缺少必填信息时，Agent 会集中询问一次。没有提供的个人信息不会猜，教师签名、成绩和审核意见也不会自行填写。
 
-## 匿名实操示例
+## 自动完成哪些步骤
 
-下面的示例来自一次本机 HTTP 抓包：启动临时服务，经回环接口访问 `/status.json`，用 Wireshark 核对第 5 帧请求和第 9 帧响应，再把截图放入匿名 DOCX。抓包共 14 帧，返回 `200 OK` 和 `application/json`。
+```mermaid
+flowchart LR
+    A["作业要求<br/>学校模板<br/>用户信息"] --> B["识别课程<br/>读取格式"]
+    B --> C{"选择可用环境"}
+    C --> W["Windows<br/>课程软件优先"]
+    C --> L["Linux / Kali / WSL"]
+    C --> M["macOS<br/>结果等价时使用"]
+    W --> D["实际操作"]
+    L --> D
+    M --> D
+    D --> E["截图与原始结果"]
+    E --> F["填入用户模板"]
+    F --> G["逐页渲染检查"]
+    G --> H(["最终 DOCX"])
 
-<p align="center">
-  <img src="assets/readme/report-proof.png" alt="匿名抓包报告的请求与响应页面" width="100%">
-</p>
+    classDef step fill:#f6f3ec,stroke:#243140,color:#17202a
+    classDef accent fill:#c9322f,stroke:#c9322f,color:#ffffff
+    class A,B,C,W,L,M,D,E,F,G step
+    class H accent
+```
 
-示例只用于展示完成方式，不含姓名、学校、学号、客户信息或生产环境数据。
+从收到文件到交付报告，Agent 会依次完成：
+
+1. 区分模板、作业要求、参考报告和用户信息。
+2. 读取模板里的纸张、页边距、字体、字号、行距、缩进、表格和页码。
+3. 检查当前电脑、虚拟机、WSL、容器和已安装软件。
+4. 选择课程要求允许的环境，运行实验并保存原始结果。
+5. 截取能看清操作和结果的画面，核对截图之间的数据是否一致。
+6. 按模板写入步骤、结果、截图、说明和长度适中的总结。
+7. 渲染 DOCX，逐页处理错位、空白页、表格溢出、图片过小和字体缺失。
+
+## Windows 优先，但不写死环境
+
+大部分中国大学计算机课程围绕 Windows 软件、Office 和厂商教学工具安排，因此 Windows 是主路线。Skill 不会假设每个人都和作者使用相同的电脑或虚拟机。
+
+| 条件 | 选择 |
+| --- | --- |
+| 作业指定 Windows、PowerShell、CMD、SSMS、eNSP、Access、Visual Studio | 使用原生 Windows，或现有 Windows 虚拟机、远程实验机 |
+| Linux 网络、安全或系统实验 | 使用 Linux、Kali、WSL、虚拟机或隔离容器 |
+| Wireshark、Python、Java、MySQL、网页开发等跨平台任务 | 当前系统能得到相同结果和截图时直接运行 |
+| 用户使用 macOS | 软件原生支持就本机完成，否则接入任意可用的 Windows/Linux 环境 |
+| 没有课程要求的软件或系统 | 只暂停受影响的部分，说明缺少什么，不伪造成功画面 |
+
+支持 Hyper-V、VMware、VirtualBox、Parallels、WSL、Docker 和授权远程实验机，不把某一种虚拟化软件写成默认答案。
 
 ## 支持的课程
 
-| 课程包 | 可处理的内容 |
+| 课程包 | 常见实验 |
 | --- | --- |
 | `packet-analysis` | Wireshark、tshark、ARP、ICMP、TCP、DNS、HTTP、PCAP |
-| `routing-switching` | VLAN、路由、交换、ACL、NAT、拓扑和连通性检查 |
-| `security-operations` | 告警复核、异常外联、终端检查、误报判断、本地靶场 |
-| `databases` | SQL、表结构、增删改查、连接查询、视图、过程和结果网格 |
-| `programming` | C/C++、Python、Java、数据结构、算法、编译和运行结果 |
-| `data-visualization` | 数据来源、清洗、绘图代码、图表和结果说明 |
+| `routing-switching` | VLAN、路由、交换、ACL、NAT、eNSP、Packet Tracer |
+| `security-operations` | Windows 日志、告警复核、异常连接、终端检查、本地靶场 |
+| `databases` | SQL Server、MySQL、PostgreSQL、SQLite、表结构、查询、视图和过程 |
+| `programming` | C/C++、Python、Java、数据结构、算法、编译和运行 |
+| `data-visualization` | Excel、Power BI、Python 绘图、数据清洗和图表说明 |
 | `web-development` | HTML、CSS、JavaScript、响应式页面、控制台和网络请求 |
 | `computer-architecture` | 电路、CPU、寄存器、存储器、汇编和仿真波形 |
 
-每个课程包单独保存该类实验常见的软件、操作步骤、截图内容和检查项。一次任务通常只读取一个课程包，不把无关课程要求带进报告。
+课程规则分别放在独立 reference 中。一次任务只读取相关课程，不把数据库的截图要求套到抓包实验里。
 
-## macOS、Windows 和虚拟机
+## 按你的模板和信息填写
 
-- macOS 能完成的任务直接使用本机终端和应用。
-- Linux 网络或安全工具可以放在已有的 Kali 虚拟机里运行。
-- Windows 命令、窗口或厂商软件必须在 Windows 环境中完成。
-- 报告只写最后采用的环境和步骤；无关的权限修复、试错过程留在工作记录中。
+- 学校模板优先。仓库里的 Markdown 只用于没有模板时建立工作目录。
+- Agent 先读取模板尺寸和样式，再填内容，不重新做一份“差不多”的表格。
+- 姓名、学号、班级、教师、单位、岗位和日期只使用用户提供或确认的值。
+- 私人或工作材料按用户要求留在本地；需要隐藏的地址、姓名和文件信息会在截图和正文中处理。
+- 文件名服从当前作业的提交规则，不沿用另一门课的命名方式。
+- 代码只实现作业要求，不塞无用的异常处理、配置层和大段注释。
 
-## 专业实践与涉密材料
+## 什么算完成
 
-真实工作材料可以帮助确定实践方向，但客户名称、内部地址、资产编号、告警详情、人员信息和原始截图不能进入公开报告。
+- 实验真的运行过，提交的代码、命令和截图来自这次运行。
+- 截图能看清软件、目标、输入和结果，前后数据对得上。
+- 报告写的是操作、结果和必要说明，不用空泛理论凑页数。
+- DOCX 保留用户模板的格式，每一页都经过渲染检查。
+- 安全实验只在本地、课程环境或其他已授权目标中进行。
+- 环境确实缺失时说明情况，不把失败改写成成功。
 
-需要演示相似工作时，应在本地隔离环境重新搭建普通场景，截图来自这次操作，并明确写成“本地复现”。不能把复现结果写成生产环境处置记录。
-
-## 不会做的事
-
-- 不生成或借用软件运行截图。
-- 不把未执行的命令、代码或查询写成成功。
-- 不对未授权主机做扫描、爆破或漏洞利用。
-- 不替用户填写教师签名、成绩和审核意见。
-- 不用仓库的通用草稿覆盖学校提供的 DOCX 模板。
-- 不为了凑篇幅添加无关理论、调试记录或资料来源。
-
-<details>
-<summary>脚本与目录</summary>
+## 仓库结构
 
 ```text
 lab-report-autopilot/
-├── SKILL.md
-├── agents/openai.yaml
-├── assets/
-│   ├── readme/
-│   └── templates/
-├── references/
-│   ├── disciplines.md
-│   ├── discipline-*.md
-│   ├── environment-playbook.md
-│   ├── evidence-and-screenshots.md
-│   ├── confidential-work.md
-│   ├── writing-and-code.md
-│   └── docx-qa.md
-├── scripts/
-│   ├── init_report.py
-│   ├── probe_environment.py
-│   └── evidence_manifest.py
-└── tests/
-```
-
-建立一个报告工作区：
-
-```bash
-python3 ~/.codex/skills/lab-report-autopilot/scripts/init_report.py \
-  work/arp-report \
-  --kind lab \
-  --discipline packet-analysis \
-  --title "ARP 协议抓包与字段分析"
-```
-
-检查当前环境：
-
-```bash
-python3 ~/.codex/skills/lab-report-autopilot/scripts/probe_environment.py --json
-```
-
-检查截图尺寸和重复文件：
-
-```bash
-python3 ~/.codex/skills/lab-report-autopilot/scripts/evidence_manifest.py \
-  work/arp-report/evidence/original \
-  --output work/arp-report/evidence-manifest.json
+├── assets/readme/                    # README 图片
+├── skills/lab-report-autopilot/
+│   ├── SKILL.md                      # Agent 执行入口
+│   ├── agents/openai.yaml            # Agent 界面元数据
+│   ├── assets/templates/             # 无学校模板时使用的草稿
+│   ├── references/
+│   │   ├── disciplines.md            # 课程选择表
+│   │   ├── discipline-*.md           # 八类课程规则
+│   │   ├── environment-playbook.md   # Windows / Linux / macOS 路线
+│   │   ├── evidence-and-screenshots.md
+│   │   ├── user-data-and-privacy.md  # 用户信息与私人材料
+│   │   ├── writing-and-code.md
+│   │   └── docx-qa.md
+│   ├── scripts/
+│   │   ├── init_report.py
+│   │   ├── probe_environment.py
+│   │   └── evidence_manifest.py
+│   └── requirements.txt
+├── tests/
+└── LICENSE
 ```
 
 运行测试：
@@ -164,8 +194,6 @@ python3 ~/.codex/skills/lab-report-autopilot/scripts/evidence_manifest.py \
 ```bash
 python3 -m unittest discover -s tests
 ```
-
-</details>
 
 ## 许可
 

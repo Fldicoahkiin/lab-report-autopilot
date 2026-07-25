@@ -4,7 +4,7 @@
 
 - Use the required compiler or runtime.
 - Record language version, build command, source filename, inputs, and execution command.
-- Use a Windows guest only when the assignment requires a Windows IDE, API, or console behavior.
+- Prefer native Windows when the assignment names Visual Studio, Dev-C++, a Windows API, or a specific Windows console. Cross-platform compilers may run on the current host.
 
 ## Implementation rules
 

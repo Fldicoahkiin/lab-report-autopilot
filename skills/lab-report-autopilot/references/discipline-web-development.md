@@ -4,7 +4,7 @@
 
 - Use the repository's package manager and local browser.
 - Record browser version, viewport, local URL, build/dev command, and main source files.
-- Use a Windows guest only when the assignment requires a Windows-only editor or browser behavior.
+- Prefer native Windows when the assignment names a Windows-only editor, server stack, or browser behavior. Otherwise use the current host.
 
 ## Execution sequence
 

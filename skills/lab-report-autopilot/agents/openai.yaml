@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lab Report Autopilot"
+  short_description: "Automatically run labs and fill report templates"
+  default_prompt: "Use $lab-report-autopilot to complete this assignment from the supplied files, run the required work, capture the actual results, preserve the report template, and deliver the checked DOCX."

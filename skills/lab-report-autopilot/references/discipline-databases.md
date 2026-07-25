@@ -2,8 +2,8 @@
 
 ## Environment route
 
-- Use an existing native database and client on macOS when the DBMS requirement permits it.
-- Use a Windows guest when SQL Server tools or a Windows-only GUI is required.
+- Prefer native Windows for SQL Server, SSMS, Access, and Windows-only database clients.
+- MySQL, PostgreSQL, SQLite, and cross-platform clients may run on the current host when the assignment accepts them.
 - Record DBMS version, client, database name, schema state, and whether sample data was supplied or created.
 
 Use synthetic course data. Do not import workplace or personal records.

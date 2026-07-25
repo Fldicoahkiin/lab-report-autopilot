@@ -3,7 +3,8 @@
 ## Environment route
 
 - Use the required simulator when available.
-- On macOS, run supported tools natively. Use an existing Windows guest in Parallels for Windows-only vendor simulators.
+- Prefer native Windows for eNSP and other Windows-only vendor simulators. On another host, use any available Windows VM or authorized course lab.
+- Run Packet Tracer or command-line network tools on the current host only when the assignment accepts that build and interface.
 - Record simulator version, device models, interface names, topology file, and addressing plan.
 
 ## Build the experiment

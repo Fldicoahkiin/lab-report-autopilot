@@ -6,7 +6,7 @@ Create one row per result that the report will claim:
 
 | ID | Claim | Action | Visible proof | App/host | Planned caption |
 | --- | --- | --- | --- | --- | --- |
-| E01 | Database query returned three rows | Run the final SELECT | Query text, result grid, and row count | DataGrip on macOS | 图1 查询条件及返回结果 |
+| E01 | Database query returned three rows | Run the final SELECT | Query text, result grid, and row count | SSMS on Windows | 图1 查询条件及返回结果 |
 
 Do not draft a success claim until its proof exists.
 

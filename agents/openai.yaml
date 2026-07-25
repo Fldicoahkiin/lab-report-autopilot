@@ -1,4 +1,0 @@
-interface:
-  display_name: "Lab Report Autopilot"
-  short_description: "Run course experiments and build checked reports"
-  default_prompt: "Use $lab-report-autopilot to run this assignment, capture the actual results, and deliver a checked report."

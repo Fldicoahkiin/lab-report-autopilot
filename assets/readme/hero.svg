@@ -1,38 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="380" viewBox="0 0 1200 380" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="800" viewBox="0 0 2560 800" role="img" aria-labelledby="title desc">
   <title id="title">lab-report-autopilot</title>
-  <desc id="desc">从作业要求到真实操作、截图和 DOCX 报告的工作流程</desc>
-  <rect width="1200" height="380" fill="#0b1220"/>
-  <rect x="0" y="0" width="1200" height="8" fill="#38bdf8"/>
-  <path d="M68 63h32l14 14v52H68z" fill="none" stroke="#38bdf8" stroke-width="3"/>
-  <path d="M100 63v16h14" fill="none" stroke="#38bdf8" stroke-width="3"/>
-  <path d="M80 96h22M80 110h18" stroke="#e2e8f0" stroke-width="3" stroke-linecap="round"/>
-  <text x="142" y="92" fill="#f8fafc" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="42" font-weight="700">lab-report-autopilot</text>
-  <text x="68" y="164" fill="#cbd5e1" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="24">真正跑实验、截结果，再按模板交 DOCX</text>
-  <text x="68" y="211" fill="#7dd3fc" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="19">$lab-report-autopilot</text>
-  <text x="68" y="252" fill="#94a3b8" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="18">macOS · Windows · Kali · Parallels</text>
-  <text x="68" y="284" fill="#94a3b8" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="18">抓包 · 网络 · 安全 · 数据库 · 编程 · 网页 · 可视化 · 组成原理</text>
+  <desc id="desc">让 Agent 全自动完成中国大学计算机实验报告</desc>
 
-  <path d="M635 104H1084" stroke="#334155" stroke-width="4"/>
-  <circle cx="635" cy="104" r="12" fill="#38bdf8"/>
-  <circle cx="785" cy="104" r="12" fill="#38bdf8"/>
-  <circle cx="934" cy="104" r="12" fill="#38bdf8"/>
-  <circle cx="1084" cy="104" r="12" fill="#38bdf8"/>
-  <text x="635" y="77" text-anchor="middle" fill="#cbd5e1" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="17">TASK</text>
-  <text x="785" y="77" text-anchor="middle" fill="#cbd5e1" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="17">RUN</text>
-  <text x="934" y="77" text-anchor="middle" fill="#cbd5e1" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="17">CAPTURE</text>
-  <text x="1084" y="77" text-anchor="middle" fill="#cbd5e1" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="17">DOCX</text>
+  <rect width="2560" height="800" fill="#f3f0e8"/>
+  <rect x="0" y="0" width="22" height="800" fill="#c9322f"/>
+  <path d="M74 88H1630M74 714H1630" stroke="#d8d3c8" stroke-width="2"/>
 
-  <rect x="635" y="151" width="449" height="151" rx="8" fill="#111c2f" stroke="#334155" stroke-width="2"/>
-  <path d="M659 184h401M659 221h401M659 258h401" stroke="#26364e" stroke-width="2"/>
-  <text x="660" y="175" fill="#7dd3fc" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="16">No.</text>
-  <text x="717" y="175" fill="#7dd3fc" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="16">Protocol</text>
-  <text x="840" y="175" fill="#7dd3fc" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="16">Observed result</text>
-  <text x="660" y="208" fill="#e2e8f0" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="17">5</text>
-  <text x="717" y="208" fill="#e2e8f0" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="17">HTTP</text>
-  <text x="840" y="208" fill="#e2e8f0" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="17">GET /status.json</text>
-  <text x="660" y="245" fill="#e2e8f0" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="17">9</text>
-  <text x="717" y="245" fill="#e2e8f0" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="17">HTTP</text>
-  <text x="840" y="245" fill="#e2e8f0" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="17">200 OK · application/json</text>
-  <text x="660" y="286" fill="#94a3b8" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="17">画面里的值，和报告里的结论一致</text>
-  <text x="68" y="344" fill="#64748b" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="16">MIT License · Agent Skill</text>
+  <text x="112" y="134" fill="#243140" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="31" font-weight="700" letter-spacing="3">LAB-REPORT-AUTOPILOT / AGENT SKILL</text>
+  <text x="112" y="270" fill="#17202a" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei','PingFang SC',sans-serif" font-size="92" font-weight="800">大学计算机实验报告</text>
+  <text x="112" y="390" fill="#c9322f" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei','PingFang SC',sans-serif" font-size="108" font-weight="850">全自动做到能交</text>
+  <text x="116" y="476" fill="#4b5563" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei','PingFang SC',sans-serif" font-size="36">读要求 · 选环境 · 跑实验 · 截结果 · 填模板 · 检查 DOCX</text>
+
+  <rect x="112" y="545" width="1410" height="104" fill="#17202a"/>
+  <text x="152" y="612" fill="#f3f0e8" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="33">
+    <tspan fill="#e55752">$</tspan>
+    <tspan dx="18">lab-report-autopilot  专业实践任务书及报告.docx</tspan>
+  </text>
+
+  <rect x="1756" y="78" width="610" height="650" fill="#ddd7cc" stroke="#243140" stroke-width="3"/>
+  <rect x="1718" y="54" width="610" height="650" fill="#e8e3d9" stroke="#243140" stroke-width="3"/>
+  <rect x="1678" y="30" width="610" height="650" fill="#ffffff" stroke="#17202a" stroke-width="5"/>
+
+  <text x="1983" y="111" text-anchor="middle" fill="#17202a" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-size="42" font-weight="700">实验（实训）报告</text>
+  <path d="M1740 154H2225M1740 222H2225M1740 290H2225" stroke="#9ca3af" stroke-width="2"/>
+  <path d="M1886 154V290" stroke="#9ca3af" stroke-width="2"/>
+  <text x="1771" y="198" fill="#4b5563" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-size="25">课程名称</text>
+  <text x="1918" y="198" fill="#17202a" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-size="25">网络协议分析</text>
+  <text x="1771" y="266" fill="#4b5563" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-size="25">实验题目</text>
+  <text x="1918" y="266" fill="#17202a" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-size="25">HTTP 请求与响应核查</text>
+
+  <text x="1740" y="344" fill="#17202a" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-size="28" font-weight="700">二、操作过程</text>
+  <rect x="1740" y="370" width="485" height="188" fill="#111827"/>
+  <rect x="1762" y="390" width="441" height="28" fill="#cbd5e1"/>
+  <path d="M1762 432H2203M1762 461H2203M1762 490H2203M1762 519H2203" stroke="#64748b" stroke-width="2"/>
+  <rect x="1762" y="456" width="441" height="31" fill="#e2c9c8"/>
+  <text x="1776" y="412" fill="#17202a" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="16">No.   Source       Destination   Protocol   Info</text>
+  <text x="1776" y="478" fill="#17202a" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="17">5     127.0.0.1    127.0.0.1     HTTP       GET /status.json</text>
+  <text x="1740" y="610" fill="#4b5563" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-size="23">图 1  实际运行结果与字段</text>
+
+  <g transform="translate(2180 500) rotate(-8)">
+    <rect x="-112" y="-55" width="224" height="110" fill="#c9322f"/>
+    <rect x="-100" y="-43" width="200" height="86" fill="none" stroke="#f3f0e8" stroke-width="4"/>
+    <text x="0" y="14" text-anchor="middle" fill="#f3f0e8" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="42" font-weight="800" letter-spacing="3">AUTO</text>
+  </g>
+
+  <text x="2418" y="755" text-anchor="end" fill="#6b7280" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="24">WINDOWS FIRST · MULTI-AGENT · 8 COURSE PACKS</text>
 </svg>
