@@ -65,7 +65,7 @@ Extract:
 
 State competing interpretations when they change the experiment. Ask only when missing information blocks execution or would cause fabricated content. Leave teacher signatures, scores, and approval fields untouched unless explicitly supplied. When the user supplies a teacher or technical title, fill the matching fields consistently in the task sheet and report information table. Keep a supplied or inferred job title short, ordinary, and aligned with the performed work.
 
-Resolve the submission filename before assembly. Follow an explicit school or class naming example first. Otherwise use a factual pattern such as `学号+姓名+报告类型.docx`; do not leave an internal project title as the delivered filename.
+Resolve the submission filename before assembly. Follow only the naming rule or example supplied for the current task. Naming varies by course, class, teacher, and submission system, so do not reuse a previous report's formula as a default. If no rule is supplied, use the user's requested name or a concise name based on the current task without treating it as a reusable convention.
 
 ## Lock the Word format contract
 
@@ -136,7 +136,7 @@ Read [writing-and-code.md](references/writing-and-code.md). For a short course e
 
 Do not add generic sections such as “测试场景与数据边界”“保密边界”“证据链” or a long debugging record unless the template or assignment requires them. Keep the finished report close to the reference reports' step density and wording level.
 
-For `--kind practice`, frame the report as assigned work rather than a longer experiment: task intake, object and known fields, execution, judgment basis, result record, and work-related reflection. Do not discuss screenshot layout in the report, and do not add a decorative company-homepage source.
+For `--kind practice`, frame the report as assigned work rather than a longer experiment: task intake, object and known fields, execution, judgment basis, result record, and work-related reflection. Do not narrate how the report is assembled: omit screenshot counts, section-order announcements, artifact inventories written as presentation notes, and statements about what the report will or will not introduce. Mention a retained file only when its operational purpose or handoff status matters. Do not add a decorative company-homepage source.
 
 For packet-based security practice, prefer a non-repeating evidence set:
 

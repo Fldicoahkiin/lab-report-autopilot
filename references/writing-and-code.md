@@ -63,6 +63,8 @@ Do not write a professional practice report as a longer laboratory report. Organ
 
 Use work subjects such as task, asset, connection, record, result, judgment basis, and disposition when they match the performed work. Avoid repeatedly saying that the student “learned the software” or “verified the experiment.” If a local reconstruction is used, state that fact briefly without making environment justification the main section.
 
+Do not narrate the document's construction. Remove sentences that count screenshots, announce the section order, list deliverables only to explain the report, or state what the report will or will not introduce. When a capture file, log, source file, or screenshot is a real work item, describe what it records or how it was handed off instead.
+
 Write reflection about limits of the work itself: missing asset context, endpoint telemetry, production scale, protocol coverage, or handoff information. Do not use reflection to discuss screenshot size, page layout, report writing, or other presentation choices unless documentation was the assigned work.
 
 Add a source list only when the template requires one or the report relies on external facts that are actually cited. Do not attach a company homepage as a decorative source.

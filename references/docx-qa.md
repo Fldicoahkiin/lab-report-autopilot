@@ -60,7 +60,7 @@ Inspect the DOCX structure as well as the render:
 - body line spacing and first-line indent equal the format contract;
 - image count, dimensions, and captions match the evidence plan;
 - page-number fields, headers, footers, and signature blocks remain present;
-- the delivered filename matches the school or class naming example.
+- the delivered filename matches the naming rule for the current task, without reusing an unsupported convention from another report.
 
 If fonts render as boxes or substitute poorly, install or select an available compatible font before delivery. Do not treat unreadable Chinese text as a passing render.
 
