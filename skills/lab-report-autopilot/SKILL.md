@@ -66,7 +66,9 @@ Record:
 
 Fill names, student numbers, class, teacher, organization, role, dates, and other fields only from values the user supplies or confirms. Use the same value everywhere it appears. Ask once for missing fields that the template requires. Leave signatures, scores, and approval fields empty unless the user explicitly provides them. Do not reuse a filename pattern from an unrelated report.
 
-Before editing Word, read [docx-qa.md](references/docx-qa.md) and measure the supplied template: paper size, margins, tables, fonts, sizes, line spacing, indents, image widths, captions, headers, footers, and page numbering. These measured values control the output.
+Before editing Word, read [docx-qa.md](references/docx-qa.md) and complete the workspace's `format-contract.md`. Read requirements from ordinary paragraphs, table cells, headers, footers, text boxes, content controls, comments, and colored instruction text. Record every stated minimum word count, screenshot count, naming rule, field rule, and formatting rule with its source location.
+
+Measure the supplied template: paper size, margins, sections, tables, fonts, sizes, line spacing, indents, image widths, captions, headers, footers, and page numbering. Record the source file hash. Do not begin assembly until the explicit requirements and measured values are in the contract.
 
 ## Choose the environment
 
@@ -114,7 +116,9 @@ For code, implement only the requested behavior. Do not add unused abstractions,
 
 ## Build and check the DOCX
 
-Use the host agent's document tools when available; otherwise use compatible DOCX tooling and a real renderer. Fill the supplied template in place. Remove sample text only where the report content replaces it.
+Use the host agent's document tools when available; otherwise use compatible DOCX tooling and a real renderer. Fill the supplied template in place. Preserve the template paragraph and cell properties while replacing text; rebuilding a cell from plain text may silently remove font hints, line spacing, indents, or pagination settings. Do not reduce a required font size merely to force a long field onto one line. Remove sample text only where the report content replaces it.
+
+Before visual review, compare the finished DOCX with `format-contract.md` and record the measured result for every rule. Count required section lengths from the finished document, not from the draft. Check package structure, sections, margins, table geometry, merged cells, fonts, sizes, line spacing, indents, fields, image count, and source-template hash.
 
 Render the latest DOCX and inspect every page at 100%:
 
@@ -127,4 +131,4 @@ Render the latest DOCX and inspect every page at 100%:
 - the filename follows this assignment's rule;
 - no credentials, private workplace data, or unrelated personal information remain.
 
-Repeat the render after every layout change. Deliver only the requested files unless the user asks for working material.
+When the template targets Microsoft Word and Word is available, open the final DOCX in Word and confirm the page count and first/last pages after the renderer check. Repeat both the structural checks and the render after every layout change. Deliver only the requested files unless the user asks for working material.

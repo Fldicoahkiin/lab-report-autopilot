@@ -42,6 +42,11 @@ def main() -> None:
         (args.output / name).mkdir(parents=True)
 
     (args.output / "draft.md").write_text(draft, encoding="utf-8")
+    format_contract = skill_dir / "assets" / "templates" / "format-contract.md"
+    (args.output / "format-contract.md").write_text(
+        format_contract.read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
     (args.output / "evidence-plan.md").write_text(
         "# 证据计划\n\n"
         "| ID | 报告结论 | 产生结论的操作 | 画面中必须可见的内容 | 文件名 | 状态 |\n"

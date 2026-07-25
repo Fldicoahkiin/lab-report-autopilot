@@ -35,6 +35,7 @@ class InitReportTests(unittest.TestCase):
 
             self.assertTrue((output / "draft.md").is_file())
             self.assertTrue((output / "evidence/original").is_dir())
+            self.assertTrue((output / "format-contract.md").is_file())
             config = json.loads((output / "report-config.json").read_text())
             self.assertEqual(config["title"], "ARP 抓包分析")
 
