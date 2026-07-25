@@ -14,22 +14,31 @@ Never invent software output, screenshots, user details, citations, or environme
 
 Resolve the directory containing this `SKILL.md` as `SKILL_DIR`. Run bundled scripts by absolute path; the current directory may be the user's report folder rather than the skill folder.
 
+Treat the bundled Python scripts as task tools, not as a requirement for the user to repair their global environment. Prefer a Python 3.10 or newer runtime supplied by the host Agent.
+
+On Windows, unless the host Agent provides a known isolated runtime, run the bootstrap before any Python helper:
+
+```powershell
+$runtime = & powershell.exe -NoProfile -ExecutionPolicy Bypass `
+  -File "$SKILL_DIR\scripts\bootstrap_windows.ps1" `
+  -Workspace "work\report-name" | ConvertFrom-Json
+$PYTHON = $runtime.python
+```
+
+The bootstrap tests `py`, `python`, and `python3`, creates a task-local virtual environment, and installs the bundled requirements there. If no usable interpreter exists, it downloads a checksum-pinned CPython installer from python.org and installs it under the report workspace without administrator rights, PATH changes, file associations, shortcuts, or global `pip`.
+
+On Linux or macOS, resolve a working Python 3.10 or newer from the host Agent or the current system, create a task-local virtual environment, and install `requirements.txt` into that environment. Do not install packages into an unrelated global Python.
+
 If no report workspace exists:
 
-```bash
-python3 "$SKILL_DIR/scripts/init_report.py" work/report-name \
+```text
+"$PYTHON" "$SKILL_DIR/scripts/init_report.py" work/report-name \
   --kind lab \
   --discipline packet-analysis \
   --title "ARP 协议抓包与字段分析"
 ```
 
 Use `--kind practice` for professional practice. A supplied DOCX remains the report template; do not replace it with the generic Markdown draft.
-
-The image checker needs Pillow:
-
-```bash
-python3 -m pip install -r "$SKILL_DIR/requirements.txt"
-```
 
 ## Read the material
 
@@ -63,8 +72,8 @@ Before editing Word, read [docx-qa.md](references/docx-qa.md) and measure the su
 
 Read [environment-playbook.md](references/environment-playbook.md), then inspect the current machine:
 
-```bash
-python3 "$SKILL_DIR/scripts/probe_environment.py" --json
+```text
+"$PYTHON" "$SKILL_DIR/scripts/probe_environment.py" --json
 ```
 
 Do not assume the author's computer or virtualization product. Follow the operating system and software named by the assignment. For common Chinese university coursework, treat Windows as the main route for Office, PowerShell, SQL Server, eNSP, vendor simulators, and Windows-only teaching software. Use Linux or Kali for Linux networking and security tools. Use macOS natively only when the named software and required screenshots remain equivalent; otherwise use any available Windows or Linux VM, container, WSL, or authorized remote lab.
@@ -86,8 +95,8 @@ Generated diagrams may explain a concept but may not stand in for a real softwar
 
 Check the image folder before drafting:
 
-```bash
-python3 "$SKILL_DIR/scripts/evidence_manifest.py" path/to/evidence \
+```text
+"$PYTHON" "$SKILL_DIR/scripts/evidence_manifest.py" path/to/evidence \
   --output evidence-manifest.json
 ```
 

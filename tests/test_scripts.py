@@ -78,5 +78,25 @@ class ProbeEnvironmentTests(unittest.TestCase):
             self.assertEqual(apps, [str(executable)])
 
 
+class WindowsBootstrapTests(unittest.TestCase):
+    def test_uses_an_isolated_non_admin_runtime(self) -> None:
+        script = (SKILL_DIR / "scripts/bootstrap_windows.ps1").read_text()
+
+        self.assertIn(".lab-report-runtime", script)
+        self.assertIn("-m venv", script)
+        self.assertIn("InstallAllUsers=0", script)
+        self.assertIn("PrependPath=0", script)
+        self.assertIn("Include_pip=1", script)
+        self.assertNotIn("pip install --user", script)
+
+    def test_pins_official_python_installers(self) -> None:
+        script = (SKILL_DIR / "scripts/bootstrap_windows.ps1").read_text()
+
+        self.assertIn("https://www.python.org/ftp/python/", script)
+        self.assertIn("python-$PythonVersion-amd64.exe", script)
+        self.assertIn("python-$PythonVersion-arm64.exe", script)
+        self.assertIn("Get-FileHash", script)
+
+
 if __name__ == "__main__":
     unittest.main()

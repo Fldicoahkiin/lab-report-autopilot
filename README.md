@@ -46,11 +46,7 @@ gh skill install Fldicoahkiin/lab-report-autopilot lab-report-autopilot \
 
 `universal` 可以换成 `claude-code`、`codex`、`cursor`、`github-copilot`、`gemini-cli` 等 [GitHub CLI 支持的 Agent ID](https://cli.github.com/manual/gh_skill_install)。
 
-手动安装时，把仓库 clone 到当前 Agent 的用户级 Skills 目录。随后在仓库根目录安装图片检查脚本使用的 Pillow：
-
-```bash
-python3 -m pip install -r skills/lab-report-autopilot/requirements.txt
-```
+手动安装时，把仓库 clone 到当前 Agent 的用户级 Skills 目录即可。Windows 用户不用先处理 Python、`pip` 或 PATH；Skill 会先验证现有环境，再为当前报告建立隔离运行时。
 
 ## 怎么使用
 
@@ -120,6 +116,8 @@ flowchart LR
 
 大部分中国大学计算机课程围绕 Windows 软件、Office 和厂商教学工具安排，因此 Windows 是主路线。Skill 不会假设每个人都和作者使用相同的电脑或虚拟机。
 
+Windows 上不会直接相信系统里的 `python` 或 `pip`。如果 Agent 没有自带运行时，Skill 会先运行 PowerShell 引导脚本：能用的 Python 被放进当前任务的虚拟环境；找不到或无法运行时，才从 python.org 下载经过哈希校验的 CPython，并装在报告工作区。整个过程不需要管理员权限，也不修改 PATH、文件关联或全局包。
+
 | 条件 | 选择 |
 | --- | --- |
 | 作业指定 Windows、PowerShell、CMD、SSMS、eNSP、Access、Visual Studio | 使用原生 Windows，或现有 Windows 虚拟机、远程实验机 |
@@ -181,6 +179,7 @@ lab-report-autopilot/
 │   │   ├── writing-and-code.md
 │   │   └── docx-qa.md
 │   ├── scripts/
+│   │   ├── bootstrap_windows.ps1      # Windows 隔离运行时
 │   │   ├── init_report.py
 │   │   ├── probe_environment.py
 │   │   └── evidence_manifest.py

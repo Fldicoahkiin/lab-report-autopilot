@@ -14,6 +14,7 @@ COMMANDS = [
     "pwsh",
     "winget",
     "wsl",
+    "py",
     "python",
     "python3",
     "pip",

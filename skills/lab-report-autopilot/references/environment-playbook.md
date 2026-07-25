@@ -2,10 +2,23 @@
 
 ## Select from the assignment first
 
+Resolve the helper runtime before probing the course environment. On Windows, do not assume that `python`, `python3`, `py`, or `pip` points to a usable installation merely because the command exists.
+
+If the host Agent does not provide an isolated Python 3.10 or newer runtime, run:
+
+```powershell
+$runtime = & powershell.exe -NoProfile -ExecutionPolicy Bypass `
+  -File "$SKILL_DIR\scripts\bootstrap_windows.ps1" `
+  -Workspace "work\report-name" | ConvertFrom-Json
+$PYTHON = $runtime.python
+```
+
+The script verifies the interpreter by executing it, creates a virtual environment inside the report workspace, and installs only this Skill's requirements. A missing or broken Python is replaced with a checksum-checked, per-workspace CPython install. It does not require elevation or change PATH, file associations, shortcuts, or global packages.
+
 Run:
 
-```bash
-python3 "$SKILL_DIR/scripts/probe_environment.py" --json
+```text
+"$PYTHON" "$SKILL_DIR/scripts/probe_environment.py" --json
 ```
 
 Then inspect the software named by the assignment and any existing virtual machines, containers, WSL distributions, or authorized remote labs. Do not assume the author's operating system or virtualization product.
@@ -31,14 +44,17 @@ If the required environment does not exist and installation is not authorized, s
 
 ## Windows execution
 
-1. Record the Windows edition, version, architecture, and relevant application versions.
-2. Use PowerShell or Command Prompt according to the assignment.
-3. Keep drive letters, path separators, commands, and window chrome native to Windows.
-4. Prefer the named classroom application over a substitute with a different interface.
-5. Capture the application title, command or configuration, target, and result when they are needed to understand the step.
-6. Avoid mixing screenshots from different Windows versions or virtual machines without explaining the change.
+1. Establish the isolated helper runtime before running any bundled Python script.
+2. Record the Windows edition, version, architecture, and relevant application versions.
+3. Use PowerShell or Command Prompt according to the assignment.
+4. Keep drive letters, path separators, commands, and window chrome native to Windows.
+5. Prefer the named classroom application over a substitute with a different interface.
+6. Capture the application title, command or configuration, target, and result when they are needed to understand the step.
+7. Avoid mixing screenshots from different Windows versions or virtual machines without explaining the change.
 
 Common routes include native Windows, Hyper-V, VMware Workstation, VirtualBox, a Windows guest on another host, and an authorized remote classroom machine. Use what already exists before installing another platform.
+
+The helper Python exists to run this Skill's setup and image checks. Do not describe it in the submitted report unless Python itself is part of the experiment. Course software, compilers, database clients, Office, packet tools, and simulators still need their own availability checks.
 
 ## Linux and Kali execution
 

@@ -44,8 +44,8 @@ Avoid:
 
 Run:
 
-```bash
-python3 "$SKILL_DIR/scripts/evidence_manifest.py" evidence \
+```text
+"$PYTHON" "$SKILL_DIR/scripts/evidence_manifest.py" evidence \
   --output evidence-manifest.json
 ```
 
