@@ -20,6 +20,9 @@ def sha256(path: Path) -> str:
 
 
 def build_manifest(root: Path) -> dict[str, object]:
+    if not root.is_dir():
+        raise NotADirectoryError(f"evidence directory not found: {root}")
+
     files = sorted(
         path for path in root.rglob("*")
         if path.is_file() and path.suffix.lower() in EXTENSIONS
