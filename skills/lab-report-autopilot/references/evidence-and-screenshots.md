@@ -50,6 +50,7 @@ A capture of a VM window from the host shows the guest frame and its title; a ca
 - Size the terminal so the whole result fits: about 90–110 columns, 25–35 rows, a 12 pt monospace font. Enlarge the window rather than shrinking the font.
 - Close update notifiers, welcome wizards, and notification banners. On Ubuntu, set `Prompt=never` in `/etc/update-manager/release-upgrades` and mark first-run setup done.
 - Disable screen lock and blanking for the session so long steps do not end on a lock screen.
+- A Chinese input method in the guest (ibus or fcitx with pinyin) swallows or rewrites text sent by `xdotool type`. Stop it for the session, or start the terminal with `GTK_IM_MODULE=gtk-im-context-simple XMODIFIERS=@im=none`, and type a test string before the real command. Restore the input method afterwards.
 - Remove noise before the step that produces it, for example create macOS tar archives with `COPYFILE_DISABLE=1 tar --no-xattrs` so Linux `tar` does not print a screen of extended-header warnings.
 
 ### Keep the command in the frame
@@ -71,6 +72,8 @@ A capture of a VM window from the host shows the guest frame and its title; a ca
 - Menus need the pointer to move onto the item before the click registers. Take a screenshot of the open menu to locate the item instead of guessing offsets from another menu.
 - Programs started with `sudo` need the display variables: `sudo -E` keeps `DISPLAY` and `XAUTHORITY`.
 - After each dialog closes, the next click may only focus the main window. Confirm with a capture before continuing.
+- When a toolbar button does not respond, use the same command from the menu bar; MiniEdit's Run button sometimes ignores synthetic clicks while Run → Run works.
+- Keep one instance of the program. Before relaunching, close or kill earlier instances so captures do not show a stale window.
 
 ### Crop and keep evidence consistent
 
