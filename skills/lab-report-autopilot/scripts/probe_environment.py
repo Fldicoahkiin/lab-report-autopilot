@@ -37,6 +37,16 @@ COMMANDS = [
     "php",
     "sqlite3",
     "soffice",
+    "ssh",
+    "scp",
+    "prlctl",
+    "VBoxManage",
+    "vmrun",
+    "qemu-system-aarch64",
+    "qemu-system-x86_64",
+    "multipass",
+    "mn",
+    "ovs-vsctl",
 ]
 
 MAC_APPS = [
@@ -46,6 +56,8 @@ MAC_APPS = [
     "/Applications/VirtualBox.app",
     "/Applications/Wireshark.app",
     "/Applications/Microsoft Word.app",
+    "/Applications/LibreOffice.app",
+    "/Applications/UTM.app/Contents/MacOS/utmctl",
 ]
 
 WINDOWS_APP_PATTERNS = [
