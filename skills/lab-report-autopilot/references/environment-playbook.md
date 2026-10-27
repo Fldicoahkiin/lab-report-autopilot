@@ -48,17 +48,17 @@ The helper Python exists to run this Skill's setup and image checks. Do not desc
 <a id="windows-helper-runtime"></a>
 ### Windows helper runtime
 
-Do not assume that `python`, `python3`, `py`, or `pip` is usable merely because the command exists. `bootstrap_windows.ps1` runs each candidate to check it, creates a virtual environment under `<workspace>\.lab-report-runtime`, and installs only this Skill's requirements. It needs no elevation and does not change PATH, file associations, shortcuts, or global packages. The runtime JSON goes to stdout and to `runtime.json` in that folder, which is UTF-8. Fallbacks it took are logged to `bootstrap.log` there; a failure prints its reason to stderr and exits with a nonzero code.
+Do not assume that `python`, `python3`, `py`, or `pip` is usable merely because the command exists. `bootstrap_windows.ps1` runs each candidate to check it, creates a virtual environment under `<workspace>\.lab-report-runtime`, and installs only this Skill's requirements. It needs no elevation and does not change PATH, file associations, shortcuts, or global packages. The runtime JSON goes to stdout and to `runtime.json` in that folder, which is UTF-8. Failed downloads and failed venv attempts that it recovered from are logged to `bootstrap.log` there. A failure prints its reason to stderr and exits with a nonzero code; read that log as well.
 
 The bootstrap takes the first of:
 
 1. a virtual environment already in the workspace that has `pip`; a broken one is rebuilt from the interpreter found below;
 2. the interpreter passed with `-SystemPython`; if it is not a working Python 3.10 or newer, or cannot create a virtual environment, the script stops instead of downloading, and running it again without the flag continues with the steps below;
-3. `py -3`, `python`, or `python3` on PATH; if it cannot create a virtual environment, the reason goes to `bootstrap.log` and the search continues;
+3. `py -3`, `python`, or `python3` on PATH; if the first one that works cannot create a virtual environment, the reason goes to `bootstrap.log` and the search moves on to step 4;
 4. a Python 3.12 that the python.org installer already installed for this Windows user; if it does not start, the script stops and suggests running again, a repair, or `-SystemPython`, because the installer would modify that install instead of adding another;
 5. a CPython 3.12 downloaded from npmmirror, then Huawei Cloud, then python.org, each file matching the pinned SHA-256, and installed once for this Windows user under `%LOCALAPPDATA%\lab-report-autopilot`; later report workspaces reuse it, and it can be removed in Settings > Apps.
 
-A first run that downloads and installs Python can take several minutes; give the command a timeout of 10 minutes when the host allows it. A run that was cut off can simply be repeated.
+A first run that downloads and installs Python can take several minutes; give the command a timeout of 10 minutes when the host allows it. A run that was cut off can be repeated; if the Python installer it started is still running, wait for it to finish first.
 
 Host Agents often ship Python without putting it on PATH. Before running the bootstrap, use the host's own report of its runtime when it has one, such as DeepSeek Harness's `load_workspace_dependencies` tool; otherwise search the host's install and runtime folders for `python.exe`, for example DeepSeek Harness's `...\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe`. When that Python can `import PIL`, as DeepSeek Harness's can, use it as `$PYTHON` and skip the bootstrap; otherwise pass it with `-SystemPython`.
 
