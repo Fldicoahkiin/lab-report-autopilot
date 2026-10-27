@@ -70,6 +70,8 @@ Record:
 
 Fill names, student numbers, class, teacher, organization, role, dates, and other fields only from values the user supplies or confirms. Use the same value everywhere it appears. Ask once for missing fields that the template requires. Leave signatures, scores, and approval fields empty unless the user explicitly provides them. Do not reuse a filename pattern from an unrelated report; when several reports for the same assignment share a pattern such as `学号+姓名+标题`, follow that shared pattern and ignore download artifacts such as a trailing ` 1`.
 
+When the user asks to add figures or sections to a report they already have, keep their existing text, figures, and fields unchanged, insert new content with the paragraph and image properties already used in that report, and match the existing figures' environment: user and host in the shell prompt, terminal theme, software versions, and node names. If the original environment is unavailable, use the closest one and tell the user exactly which visible values differ.
+
 Before editing Word, read [docx-qa.md](references/docx-qa.md) and complete the workspace's `format-contract.md`. Read requirements from ordinary paragraphs, table cells, headers, footers, text boxes, content controls, comments, and colored instruction text. Record every stated minimum word count, screenshot count, naming rule, field rule, and formatting rule with its source location.
 
 Measure the supplied template: paper size, margins, sections, tables, fonts, sizes, line spacing, indents, image widths, captions, headers, footers, and page numbering. Record the source file hash. Do not begin assembly until the explicit requirements and measured values are in the contract.
