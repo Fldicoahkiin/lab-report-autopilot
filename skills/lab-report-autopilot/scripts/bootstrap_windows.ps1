@@ -11,6 +11,7 @@ $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
 $PythonVersion = "3.12.10"
+$PythonMinor = $PythonVersion -replace '\.\d+$', ''
 $WorkspacePath = [System.IO.Path]::GetFullPath($Workspace)
 $RuntimePath = Join-Path $WorkspacePath ".lab-report-runtime"
 $PrivatePythonPath = Join-Path $RuntimePath "python-$PythonVersion"
@@ -155,18 +156,21 @@ function Get-InstallerSpec {
         "AMD64" {
             return @{
                 File = "python-$PythonVersion-amd64.exe"
+                Tag = $PythonMinor
                 Sha256 = "67b5635e80ea51072b87941312d00ec8927c4db9ba18938f7ad2d27b328b95fb"
             }
         }
         "ARM64" {
             return @{
                 File = "python-$PythonVersion-arm64.exe"
+                Tag = "$PythonMinor-arm64"
                 Sha256 = "377ac8fd478987940088e879441e702a71b53164d2a1e6f1d51ff77a7e470258"
             }
         }
         "X86" {
             return @{
                 File = "python-$PythonVersion.exe"
+                Tag = "$PythonMinor-32"
                 Sha256 = "fdfe385b94f5b8785a0226a886979527fd26eb65defdbf29992fd22cc4b0e31e"
             }
         }
@@ -183,6 +187,22 @@ function Install-PrivatePython {
     }
 
     $Spec = Get-InstallerSpec
+    # With Python $PythonMinor already registered for this user (PEP 514; the tag is
+    # sys.winver), for example by an earlier report workspace, the installer would
+    # modify that install instead of using TargetDir, and the options below could
+    # remove features from it. Never run the installer over one.
+    $Registration = Get-Item `
+        -LiteralPath "HKCU:\Software\Python\PythonCore\$($Spec.Tag)\InstallPath" `
+        -ErrorAction SilentlyContinue
+    if ($Registration) {
+        $Registered = $Registration.GetValue("ExecutablePath")
+        if ($Registered -and (Test-PythonExecutable $Registered)) {
+            return $Registered
+        }
+        throw "Python $PythonMinor is registered for this Windows user at '$Registered' but does not run. " +
+            "Repair or uninstall it in Settings > Apps, or re-run with -SystemPython <path to python.exe>."
+    }
+
     $Installer = Join-Path $RuntimePath $Spec.File
     $NeedsDownload = -not (Test-Path -LiteralPath $Installer -PathType Leaf)
 
