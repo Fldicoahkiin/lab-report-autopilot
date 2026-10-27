@@ -38,6 +38,10 @@ function Invoke-ProcessWithTimeout {
     $StartInfo.CreateNoWindow = $true
     $StartInfo.RedirectStandardOutput = $true
     $StartInfo.RedirectStandardError = $true
+    # Python runs with -X utf8. The default console code page (GBK on Chinese
+    # Windows) would garble non-ASCII paths, such as a Chinese user name.
+    $StartInfo.StandardOutputEncoding = [System.Text.Encoding]::UTF8
+    $StartInfo.StandardErrorEncoding = [System.Text.Encoding]::UTF8
 
     $Process = New-Object System.Diagnostics.Process
     $Process.StartInfo = $StartInfo
