@@ -1,6 +1,6 @@
 ---
 name: lab-report-autopilot
-description: Complete Chinese university computing lab, training, coursework, and professional-practice reports from the user's instructions, identity fields, reference reports, and DOCX template. Use when an agent must choose a Windows, Linux, or macOS environment; operate terminals or GUI software; run simple course code; capture actual screenshots or packet files; analyze results; preserve the supplied Word format; and return a checked report for networking, cybersecurity, databases, programming, data visualization, web development, or computer architecture.
+description: Complete Chinese university lab reports (实验报告), training reports (实训报告), coursework (课程设计), and professional-practice reports (专业实践报告) from the user's instructions, identity fields, reference reports, and DOCX template. Use when an agent must set up a Windows, Linux, or macOS environment or a virtual machine (UTM, Parallels, VMware, VirtualBox, WSL); operate terminals or GUI software; run course code; capture real screenshots or packet files; analyze results; preserve the supplied Word format; and return a checked report. Covers networking, SDN, cybersecurity, operating systems, databases, programming, data visualization, web development, computer architecture, and any other computing course, researching unfamiliar subjects from official documentation.
 license: MIT
 ---
 
@@ -52,7 +52,7 @@ Classify each input before writing:
 
 Learn the pattern, not another person's identity or results. Do not copy names, screenshots, addresses, private records, or first-person claims.
 
-Read [disciplines.md](references/disciplines.md), then load the one matching discipline file. Load a second only when the assignment actually crosses subjects.
+Read [disciplines.md](references/disciplines.md). If a course pack matches, load it; load a second only when the assignment actually crosses subjects. The packs cover common evidence rules, not every course. When no pack matches, or the assignment names software, versions, or concepts the pack does not cover, research them before running anything: prefer the assignment's own manual, the software's official documentation and release notes, and the source repository; check that the instructions match the installed version and architecture. Keep sources in working notes, not in the submitted report, unless the template asks for references.
 
 ## Decide what must be delivered
 
@@ -64,7 +64,7 @@ Record:
 - the visible result needed for each submitted claim;
 - length, date, filename, and file-format rules.
 
-Fill names, student numbers, class, teacher, organization, role, dates, and other fields only from values the user supplies or confirms. Use the same value everywhere it appears. Ask once for missing fields that the template requires. Leave signatures, scores, and approval fields empty unless the user explicitly provides them. Do not reuse a filename pattern from an unrelated report.
+Fill names, student numbers, class, teacher, organization, role, dates, and other fields only from values the user supplies or confirms. Use the same value everywhere it appears. Ask once for missing fields that the template requires. Leave signatures, scores, and approval fields empty unless the user explicitly provides them. Do not reuse a filename pattern from an unrelated report; when several reports for the same assignment share a pattern such as `学号+姓名+标题`, follow that shared pattern and ignore download artifacts such as a trailing ` 1`.
 
 Before editing Word, read [docx-qa.md](references/docx-qa.md) and complete the workspace's `format-contract.md`. Read requirements from ordinary paragraphs, table cells, headers, footers, text boxes, content controls, comments, and colored instruction text. Record every stated minimum word count, screenshot count, naming rule, field rule, and formatting rule with its source location.
 
@@ -79,6 +79,8 @@ Read [environment-playbook.md](references/environment-playbook.md), then inspect
 ```
 
 Do not assume the author's computer or virtualization product. Follow the operating system and software named by the assignment. For common Chinese university coursework, treat Windows as the main route for Office, PowerShell, SQL Server, eNSP, vendor simulators, and Windows-only teaching software. Use Linux or Kali for Linux networking and security tools. Use macOS natively only when the named software and required screenshots remain equivalent; otherwise use any available Windows or Linux VM, container, WSL, or authorized remote lab.
+
+Desktop control is optional. Use the cheapest route that reaches the software: shell commands first, then application scripting or automation inside a guest, then the host Agent's own computer-use tool if it has one. The playbook's [control routes](references/environment-playbook.md#control-the-desktop) describe each route; never ask the user to install a different Agent only to gain computer use.
 
 Keep permission fixes and failed attempts in working notes unless they change the submitted result. Security work must stay inside local labs, course systems, deliberately vulnerable targets, or other authorized systems.
 
@@ -98,7 +100,7 @@ Generated diagrams may explain a concept but may not stand in for a real softwar
 Check the image folder before drafting:
 
 ```text
-"$PYTHON" "$SKILL_DIR/scripts/evidence_manifest.py" path/to/evidence \
+"$PYTHON" "$SKILL_DIR/scripts/evidence_manifest.py" evidence/original \
   --output evidence-manifest.json
 ```
 
