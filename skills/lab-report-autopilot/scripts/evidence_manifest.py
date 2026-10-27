@@ -41,10 +41,13 @@ def build_manifest(root: Path) -> dict[str, object]:
         try:
             with Image.open(path) as image:
                 image.verify()
-            # verify() leaves the image unusable, so reopen it for the metadata.
+            # verify() checks chunk checksums but skips JPEG data and leaves the
+            # image unusable, so reopen it and decode the pixels as well.
             with Image.open(path) as image:
+                image.load()
                 entry.update(width=image.width, height=image.height, format=image.format)
-        except (UnidentifiedImageError, OSError) as error:
+        # Pillow reports a broken PNG chunk as SyntaxError.
+        except (UnidentifiedImageError, OSError, SyntaxError) as error:
             entry["error"] = str(error)
         if digest in first_by_hash:
             entry["duplicate_of"] = first_by_hash[digest]

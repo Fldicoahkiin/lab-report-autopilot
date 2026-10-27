@@ -17,6 +17,11 @@ sys.path.insert(0, str(SKILL_DIR))
 from scripts import evidence_manifest, init_report, probe_environment
 
 
+def noise_image() -> Image.Image:
+    # Noise keeps the compressed data large enough to damage or cut in half.
+    return Image.frombytes("L", (64, 48), os.urandom(64 * 48))
+
+
 class InitReportTests(unittest.TestCase):
     def test_creates_report_workspace(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -95,6 +100,29 @@ class EvidenceManifestTests(unittest.TestCase):
             self.assertEqual(manifest["error_count"], 1)
             bad = next(image for image in manifest["images"] if image["path"] == "bad.png")
             self.assertIn("error", bad)
+
+    def test_reports_png_with_broken_chunk_checksum(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            noise_image().save(root / "capture.png")
+            data = bytearray((root / "capture.png").read_bytes())
+            data[data.index(b"IDAT") + 20] ^= 0xFF
+            (root / "capture.png").write_bytes(data)
+
+            manifest = evidence_manifest.build_manifest(root)
+
+            self.assertEqual(manifest["error_count"], 1)
+
+    def test_reports_truncated_jpeg(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            noise_image().save(root / "capture.jpg", quality=90)
+            data = (root / "capture.jpg").read_bytes()
+            (root / "capture.jpg").write_bytes(data[: len(data) // 2])
+
+            manifest = evidence_manifest.build_manifest(root)
+
+            self.assertEqual(manifest["error_count"], 1)
 
     def test_marks_duplicate_images(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
