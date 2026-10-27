@@ -60,6 +60,19 @@ class InitReportTests(unittest.TestCase):
 
 
 class EvidenceManifestTests(unittest.TestCase):
+    def test_reports_unreadable_image_without_stopping(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            Image.new("RGB", (32, 24), "white").save(root / "good.png")
+            (root / "bad.png").write_bytes(b"not an image")
+
+            manifest = evidence_manifest.build_manifest(root)
+
+            self.assertEqual(manifest["image_count"], 2)
+            self.assertEqual(manifest["error_count"], 1)
+            bad = next(image for image in manifest["images"] if image["path"] == "bad.png")
+            self.assertIn("error", bad)
+
     def test_marks_duplicate_images(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
