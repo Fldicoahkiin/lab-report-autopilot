@@ -247,7 +247,7 @@ function New-IsolatedPython {
         -Arguments "-X utf8 -m venv `"$Directory`"" `
         -TimeoutSeconds 180
     if ($Result.ExitCode -ne 0 -or -not (Test-PythonExecutable $Python)) {
-        return $null
+        throw "Could not create a virtual environment with ${SourcePython}: $($Result.StdErr.Trim())"
     }
     return $Python
 }
@@ -263,26 +263,35 @@ if (-not (Test-PythonExecutable $Python)) {
 }
 
 if (-not (Test-PythonExecutable $Python)) {
-    $SourcePython = if ($SystemPython -and (Test-PythonExecutable $SystemPython)) {
-        $SystemPython
+    if ($SystemPython) {
+        # The caller chose this interpreter to avoid the download, so never replace it silently.
+        if (-not (Test-PythonExecutable $SystemPython)) {
+            throw "-SystemPython is not a working Python 3.10+ executable: $SystemPython"
+        }
+        $SourcePython = $SystemPython
     }
     else {
-        Find-WorkingPython
+        $SourcePython = Find-WorkingPython
     }
     if ($SourcePython) {
-        $Python = New-IsolatedPython -SourcePython $SourcePython -Directory $ExternalVenv
-        $Source = "system-python"
+        try {
+            $Python = New-IsolatedPython -SourcePython $SourcePython -Directory $ExternalVenv
+            $Source = "system-python"
+        }
+        catch {
+            if ($SystemPython) {
+                throw
+            }
+            # stdout carries the runtime JSON, so diagnostics go to stderr.
+            [Console]::Error.WriteLine("$($_.Exception.Message) Installing a workspace Python instead.")
+        }
     }
 }
 
-if (-not $Python -or -not (Test-PythonExecutable $Python)) {
+if (-not (Test-PythonExecutable $Python)) {
     $PrivatePython = Install-PrivatePython
     $Python = New-IsolatedPython -SourcePython $PrivatePython -Directory $PrivateVenv
     $Source = "workspace-python"
-}
-
-if (-not $Python -or -not (Test-PythonExecutable $Python)) {
-    throw "Unable to create a working Python virtual environment."
 }
 
 $RequirementsHash = ""
