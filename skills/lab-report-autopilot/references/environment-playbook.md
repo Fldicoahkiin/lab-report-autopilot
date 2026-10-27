@@ -2,18 +2,7 @@
 
 ## Select from the assignment first
 
-Resolve the helper runtime before probing the course environment. On Windows, do not assume that `python`, `python3`, `py`, or `pip` points to a usable installation merely because the command exists.
-
-If the host Agent does not provide an isolated Python 3.10 or newer runtime, run:
-
-```powershell
-$runtime = & powershell.exe -NoProfile -ExecutionPolicy Bypass `
-  -File "$SKILL_DIR\scripts\bootstrap_windows.ps1" `
-  -Workspace "work\report-name" | ConvertFrom-Json
-$PYTHON = $runtime.python
-```
-
-The script verifies the interpreter by executing it, creates a virtual environment inside the report workspace, and installs only this Skill's requirements. A missing or broken Python is replaced with a checksum-checked, per-workspace CPython install. It does not require elevation or change PATH, file associations, shortcuts, or global packages.
+Resolve the helper runtime before probing the course environment, as the Skill's [Set up](../SKILL.md#set-up) section describes; on Windows, see also [Windows helper runtime](#windows-helper-runtime).
 
 Run:
 
@@ -55,6 +44,22 @@ If the required environment does not exist and installation is not authorized, s
 Common routes include native Windows, Hyper-V, VMware Workstation, VirtualBox, a Windows guest on another host, and an authorized remote classroom machine. Use what already exists before installing another platform.
 
 The helper Python exists to run this Skill's setup and image checks. Do not describe it in the submitted report unless Python itself is part of the experiment. Course software, compilers, database clients, Office, packet tools, and simulators still need their own availability checks.
+
+<a id="windows-helper-runtime"></a>
+### Windows helper runtime
+
+Do not assume that `python`, `python3`, `py`, or `pip` is usable merely because the command exists. `bootstrap_windows.ps1` runs each candidate to check it, creates a virtual environment under `<workspace>\.lab-report-runtime`, and installs only this Skill's requirements. It needs no elevation and does not change PATH, file associations, shortcuts, or global packages. The runtime JSON goes to stdout and diagnostics to stderr.
+
+The bootstrap takes the first of:
+
+1. a virtual environment already in the workspace;
+2. the interpreter passed with `-SystemPython`; if it is not a working Python 3.10 or newer, or cannot create a virtual environment, the script stops instead of downloading;
+3. `py -3`, `python`, or `python3` on PATH;
+4. a CPython 3.12 installed under the workspace from python.org, then npmmirror, then Huawei Cloud; each download must match the pinned SHA-256.
+
+Host Agents often ship Python without putting it on PATH. Search the host's install and runtime folders for `python.exe` before letting the bootstrap download; for example, DeepSeek Harness keeps one at `...\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe`.
+
+python.org often resets connections from mainland-China networks (`基础连接已经关闭`). When every download source fails, find a host runtime and pass `-SystemPython`. `pip` reads `PIP_INDEX_URL` from the environment; when PyPI is unreachable, set it to a mirror the user accepts, such as `https://pypi.tuna.tsinghua.edu.cn/simple`, and run the bootstrap again. PyPI packages are not hash-pinned, so the bootstrap does not choose an index itself.
 
 ### Linux guests in VMware Workstation
 
