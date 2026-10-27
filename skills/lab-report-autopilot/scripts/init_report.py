@@ -42,7 +42,7 @@ def main() -> None:
     draft = draft.replace("{{TITLE}}", args.title)
     draft = draft.replace("{{DISCIPLINE}}", DISCIPLINES.get(args.discipline, args.discipline))
 
-    # The Windows bootstrap may already have created the folder for its runtime.
+    # The helper runtime step may already have created the folder.
     if (args.output / "draft.md").exists():
         sys.exit(f"report workspace already initialized: {args.output}")
     args.output.mkdir(parents=True, exist_ok=True)

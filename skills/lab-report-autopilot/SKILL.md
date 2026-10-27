@@ -35,10 +35,10 @@ On Linux or macOS, create the same workspace virtual environment from a Python 3
 ```text
 python3 -m venv work/report-name/.lab-report-runtime/venv
 work/report-name/.lab-report-runtime/venv/bin/python -m pip install -r "$SKILL_DIR/requirements.txt"
-PYTHON=work/report-name/.lab-report-runtime/venv/bin/python
+PYTHON="$PWD/work/report-name/.lab-report-runtime/venv/bin/python"
 ```
 
-If no report workspace exists:
+Initialize the workspace while `work/report-name/draft.md` does not exist; the runtime step may already have created the folder:
 
 ```text
 "$PYTHON" "$SKILL_DIR/scripts/init_report.py" work/report-name \
