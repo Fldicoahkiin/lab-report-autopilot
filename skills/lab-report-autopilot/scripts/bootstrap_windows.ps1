@@ -19,12 +19,14 @@ $PrivatePythonPath = Join-Path $RuntimePath "python-$PythonVersion"
 # stderr lines into errors when the caller redirects them, so fallbacks taken on
 # the way to a working runtime are recorded here instead.
 $BootstrapLog = Join-Path $RuntimePath "bootstrap.log"
-# python.org resets connections from many mainland-China networks. The mirrors
-# serve the same files, and every download must match the pinned SHA-256.
+# Most users are on mainland-China networks, where python.org often resets or
+# crawls, and Invoke-WebRequest -TimeoutSec does not limit a slow body, so a
+# slow first source would keep the others from being tried. The mirrors serve
+# the same files and every download must match the pinned SHA-256.
 $DownloadBases = @(
-    "https://www.python.org/ftp/python"
     "https://registry.npmmirror.com/-/binary/python"
     "https://mirrors.huaweicloud.com/python"
+    "https://www.python.org/ftp/python"
 )
 
 if (-not $Requirements) {
