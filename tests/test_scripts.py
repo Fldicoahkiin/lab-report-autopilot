@@ -40,6 +40,25 @@ class InitReportTests(unittest.TestCase):
             self.assertEqual(config["title"], "ARP 抓包分析")
 
 
+    def test_accepts_course_name_without_registry_id(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "report"
+            argv = [
+                "init_report.py",
+                str(output),
+                "--kind",
+                "lab",
+                "--discipline",
+                "SDN 技术",
+                "--title",
+                "软件定义网络测试床搭建",
+            ]
+            with patch("sys.argv", argv):
+                init_report.main()
+
+            self.assertIn("SDN 技术", (output / "draft.md").read_text(encoding="utf-8"))
+
+
 class EvidenceManifestTests(unittest.TestCase):
     def test_marks_duplicate_images(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

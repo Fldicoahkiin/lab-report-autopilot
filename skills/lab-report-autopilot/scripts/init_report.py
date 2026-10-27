@@ -27,7 +27,11 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("output", type=Path)
     parser.add_argument("--kind", choices=("lab", "practice"), required=True)
-    parser.add_argument("--discipline", choices=DISCIPLINES, required=True)
+    parser.add_argument(
+        "--discipline",
+        required=True,
+        help="a registry ID such as packet-analysis, or the course name when no ID fits",
+    )
     parser.add_argument("--title", required=True)
     args = parser.parse_args()
 
@@ -35,7 +39,7 @@ def main() -> None:
     template = skill_dir / "assets" / "templates" / TEMPLATES[args.kind]
     draft = template.read_text(encoding="utf-8")
     draft = draft.replace("{{TITLE}}", args.title)
-    draft = draft.replace("{{DISCIPLINE}}", DISCIPLINES[args.discipline])
+    draft = draft.replace("{{DISCIPLINE}}", DISCIPLINES.get(args.discipline, args.discipline))
 
     args.output.mkdir(parents=True)
     for name in ("evidence/original", "evidence/working", "notes", "src", "output"):
