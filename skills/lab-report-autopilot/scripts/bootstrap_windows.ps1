@@ -137,9 +137,11 @@ function Find-WorkingPython {
                 ForEach-Object { $_.Trim() } |
                 Where-Object { $_ }
         )
+        # -as yields $null instead of stopping the script when a startup hook
+        # such as sitecustomize prints extra lines; the candidate is then skipped.
         if ($Lines.Count -ge 3 -and
-            [int]$Lines[1] -eq 3 -and
-            [int]$Lines[2] -ge 10 -and
+            ($Lines[1] -as [int]) -eq 3 -and
+            ($Lines[2] -as [int]) -ge 10 -and
             (Test-PythonExecutable $Lines[0])) {
             return $Lines[0]
         }
