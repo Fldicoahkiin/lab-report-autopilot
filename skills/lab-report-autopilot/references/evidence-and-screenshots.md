@@ -97,8 +97,8 @@ A capture of a VM window from the host shows the guest frame and its title; a ca
 Run:
 
 ```text
-"$PYTHON" "$SKILL_DIR/scripts/evidence_manifest.py" evidence/original \
-  --output evidence-manifest.json
+"$PYTHON" "$SKILL_DIR/scripts/evidence_manifest.py" work/report-name/evidence/original \
+  --output work/report-name/evidence-manifest.json
 ```
 
 Review:

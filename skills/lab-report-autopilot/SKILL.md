@@ -15,7 +15,7 @@ Never guess, brute-force, or derive passwords, including from student numbers or
 <a id="set-up"></a>
 ## Set up
 
-Resolve the directory containing this `SKILL.md` as `SKILL_DIR`. Run bundled scripts by absolute path; the current directory may be the user's report folder rather than the skill folder.
+Resolve the directory containing this `SKILL.md` as `SKILL_DIR`. Run bundled scripts by absolute path; the current directory may be the user's report folder rather than the skill folder. The examples run from the folder that holds `work/report-name`.
 
 Treat the bundled Python scripts as task tools, not as a requirement for the user to repair their global environment. Prefer a Python 3.10 or newer runtime supplied by the host Agent.
 
@@ -30,7 +30,13 @@ $PYTHON = $runtime.python
 
 The bootstrap builds a virtual environment inside the report workspace from a working Python and downloads a checksum-pinned CPython only when it finds none. A host Agent often ships its own Python off `PATH`; find it first and pass it with `-SystemPython <path>`, because the download often fails on mainland-China networks. See [Windows helper runtime](references/environment-playbook.md#windows-helper-runtime) for the search order, where hosts keep Python, and blocked downloads.
 
-On Linux or macOS, resolve a working Python 3.10 or newer from the host Agent or the current system, create a task-local virtual environment, and install `requirements.txt` into that environment. Do not install packages into an unrelated global Python.
+On Linux or macOS, create the same workspace virtual environment from a Python 3.10 or newer supplied by the host Agent or the system; replace `python3` when it is older. Do not install packages into an unrelated global Python.
+
+```text
+python3 -m venv work/report-name/.lab-report-runtime/venv
+work/report-name/.lab-report-runtime/venv/bin/python -m pip install -r "$SKILL_DIR/requirements.txt"
+PYTHON=work/report-name/.lab-report-runtime/venv/bin/python
+```
 
 If no report workspace exists:
 
@@ -112,8 +118,8 @@ Generated diagrams may explain a concept but may not stand in for a real softwar
 Check the image folder before drafting:
 
 ```text
-"$PYTHON" "$SKILL_DIR/scripts/evidence_manifest.py" evidence/original \
-  --output evidence-manifest.json
+"$PYTHON" "$SKILL_DIR/scripts/evidence_manifest.py" work/report-name/evidence/original \
+  --output work/report-name/evidence-manifest.json
 ```
 
 Fix corrupt files, accidental duplicates, unreadable captures, exposed private data, and missing result screens.
