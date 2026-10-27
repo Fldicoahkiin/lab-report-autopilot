@@ -55,7 +55,7 @@ The bootstrap takes the first of:
 1. a virtual environment already in the workspace that has `pip`; a broken one is rebuilt from the interpreter found below;
 2. the interpreter passed with `-SystemPython`; if it is not a working Python 3.10 or newer, or cannot create a virtual environment, the script stops instead of downloading, and running it again without the flag continues with the steps below;
 3. `py -3`, `python`, or `python3` on PATH; if it cannot create a virtual environment, the reason goes to `bootstrap.log` and the search continues;
-4. a Python 3.12 already registered for this Windows user, such as the one an earlier report workspace installed; if it no longer runs, the script stops and asks for a repair, an uninstall, or `-SystemPython`, because the installer would modify that install instead of adding another;
+4. a Python 3.12 that the python.org installer already installed for this Windows user; if it does not start, the script stops and suggests running again, a repair, or `-SystemPython`, because the installer would modify that install instead of adding another;
 5. a CPython 3.12 installed under the workspace from npmmirror, then Huawei Cloud, then python.org; each download must match the pinned SHA-256.
 
 A first run that downloads and installs Python can take several minutes; give the command a timeout of 10 minutes when the host allows it. A run that was cut off can simply be repeated.

@@ -195,20 +195,23 @@ function Install-PrivatePython {
     }
 
     $Spec = Get-InstallerSpec
-    # With Python $PythonMinor already registered for this user (PEP 514; the tag is
-    # sys.winver), for example by an earlier report workspace, the installer would
-    # modify that install instead of using TargetDir, and the options below could
-    # remove features from it. Never run the installer over one.
+    # With Python $PythonMinor already installed for this user by the python.org
+    # installer (PEP 514; the tag is sys.winver), for example the student's own
+    # copy or one an earlier report workspace installed, the installer would modify
+    # that install instead of using TargetDir, and the options below could remove
+    # features from it. Never run the installer over one. That installer always
+    # writes ExecutablePath; conda registers InstallPath alone and is not affected.
     $Registration = Get-Item `
         -LiteralPath "HKCU:\Software\Python\PythonCore\$($Spec.Tag)\InstallPath" `
         -ErrorAction SilentlyContinue
-    if ($Registration) {
-        $Registered = $Registration.GetValue("ExecutablePath")
-        if ($Registered -and (Test-PythonExecutable $Registered)) {
+    $Registered = if ($Registration) { $Registration.GetValue("ExecutablePath") } else { $null }
+    if ($Registered) {
+        if (Test-PythonExecutable $Registered) {
             return $Registered
         }
-        throw "Python $PythonMinor is registered for this Windows user at '$Registered' but does not run. " +
-            "Repair or uninstall it in Settings > Apps, or re-run with -SystemPython <path to python.exe>."
+        throw "Python $PythonMinor is installed for this Windows user at $Registered but did not start. " +
+            "Run the bootstrap again; if this repeats, repair or uninstall that Python in Settings > Apps, " +
+            "or re-run with -SystemPython <path to a working python.exe>."
     }
 
     $Installer = Join-Path $RuntimePath $Spec.File
