@@ -10,7 +10,7 @@ Fill the workspace's `evidence-plan.md` with one row per planned figure; a claim
 
 Do not draft a success claim until its proof exists.
 
-When a reference report sets the pattern, add one row per figure the reference shows, with its sub-item in `子项` and its figure number in `参考图`, so the plan carries the reference's full figure count before capture starts. Reproduce every figure of a multi-figure step, not just the final result. Verify the delivered set against this plan at the end: each sub-item has at least as many figures as the reference, covering the same subjects. Leave `参考图` empty when no reference was named.
+When a reference report sets the pattern, add one row per figure the reference shows, with its sub-item in `子项` and its figure number in `参考图`, so the plan carries the reference's full figure count before capture starts. Reproduce every figure of a multi-figure step, not just the final result. Verify the delivered set against this plan at the end: each sub-item has at least as many figures as the reference, covering the same subjects, unless an explicit requirement sets another count. Leave `参考图` empty when no reference was named.
 
 ## Capture the right state
 
