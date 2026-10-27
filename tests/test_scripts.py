@@ -4,6 +4,7 @@ import json
 import os
 import sys
 import tempfile
+import types
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -57,6 +58,28 @@ class InitReportTests(unittest.TestCase):
                 init_report.main()
 
             self.assertIn("SDN 技术", (output / "draft.md").read_text(encoding="utf-8"))
+
+
+    def test_reuses_folder_created_by_bootstrap_but_not_a_draft(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "report"
+            (output / ".lab-report-runtime").mkdir(parents=True)
+            argv = [
+                "init_report.py",
+                str(output),
+                "--kind",
+                "lab",
+                "--discipline",
+                "databases",
+                "--title",
+                "SQL 查询",
+            ]
+            with patch("sys.argv", argv):
+                init_report.main()
+            self.assertTrue((output / "draft.md").is_file())
+
+            with patch("sys.argv", argv), self.assertRaises(SystemExit):
+                init_report.main()
 
 
 class EvidenceManifestTests(unittest.TestCase):

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -41,9 +42,12 @@ def main() -> None:
     draft = draft.replace("{{TITLE}}", args.title)
     draft = draft.replace("{{DISCIPLINE}}", DISCIPLINES.get(args.discipline, args.discipline))
 
-    args.output.mkdir(parents=True)
+    # The Windows bootstrap may already have created the folder for its runtime.
+    if (args.output / "draft.md").exists():
+        sys.exit(f"report workspace already initialized: {args.output}")
+    args.output.mkdir(parents=True, exist_ok=True)
     for name in ("evidence/original", "evidence/working", "notes", "src", "output"):
-        (args.output / name).mkdir(parents=True)
+        (args.output / name).mkdir(parents=True, exist_ok=True)
 
     (args.output / "draft.md").write_text(draft, encoding="utf-8")
     format_contract = skill_dir / "assets" / "templates" / "format-contract.md"
