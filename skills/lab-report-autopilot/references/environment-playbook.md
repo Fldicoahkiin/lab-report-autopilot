@@ -72,23 +72,65 @@ The helper Python exists to run this Skill's setup and image checks. Do not desc
 
 For Wireshark capture permission, use the official ChmodBPF component or an authorized bounded capture command. Never save, print, or place an administrator password in notes, commands, screenshots, or the report.
 
-## GUI automation and virtual machines
+### Apple Silicon
 
-When the host agent can control desktop applications:
+Apple Silicon Macs run ARM64 guests at native speed and x86 guests only through slow emulation. Plan the guest around that:
+
+| Need | Route |
+| --- | --- |
+| Linux course work (Mininet, OVS, Kali tools, compilers, servers) | ARM64 Linux guest in UTM or Parallels |
+| Windows course work (Office, PowerShell, SQL Server) | Windows 11 ARM guest; it runs most x86 apps through built-in translation |
+| x86-only kernel drivers or simulators (eNSP, some vendor tools) | Course lab machine, remote Windows, or an x86 PC; emulation is a last resort |
+
+UTM is free, uses QEMU, and can be scripted: AppleScript creates and reconfigures VMs, and `/Applications/UTM.app/Contents/MacOS/utmctl` starts, stops, and lists them. Parallels Desktop is heavier and paid, but integrates guest tools and offers `prlctl`. Use whichever already exists before installing another.
+
+ARM64 Linux details that course manuals usually miss:
+
+- Ubuntu ARM64 packages live under `ubuntu-ports`. A mirror line such as `http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/` works; the x86 path `.../ubuntu/` does not.
+- Ubuntu 20.04 ships only a server ISO for ARM64. Install `ubuntu-desktop-minimal` afterwards when the report needs a GUI.
+- Prebuilt x86 binaries and offline install scripts from the course may not run. Prefer the distribution package or the upstream source build.
+
+When the guest is created without manual clicks:
+
+- Ubuntu autoinstall reads a `cidata` seed disk, but asks for confirmation unless the kernel command line contains `autoinstall`; add it to the ISO's `grub.cfg` with `xorriso` and set a short timeout.
+- During installation only the ISO's package pool is reachable. Listing a package that is not on the ISO, such as `qemu-guest-agent`, fails the whole install; install it after first boot.
+- Set `shutdown: poweroff`, then detach the ISO before the next boot, or the installer runs again.
+- Put the SSH public key in the seed so later steps run over SSH. Remove the key when the work is done.
+- A QEMU serial console exposed as a host pty echoes input back into the guest unless the host side stays in raw mode. Hold it open from one process instead of reopening it per command.
+
+<a id="control-the-desktop"></a>
+## Control the desktop
+
+Computer use is one route among several, and usually the slowest. Choose the first route that reaches the software:
+
+| Order | Route | Works with | Use for |
+| --- | --- | --- | --- |
+| 1 | Shell commands on the host or over SSH | Every Agent with a terminal | Installs, configuration, command-line experiments, file transfer |
+| 2 | Application scripting | Every Agent with a terminal | macOS: AppleScript and `osascript` for Word, Terminal, UTM; Linux guests: `xdotool` and ImageMagick `import` on an X11 session; Office COM on Windows |
+| 3 | The host Agent's built-in computer use | Agents that ship it | Native GUI programs that expose no script interface |
+| 4 | A desktop-control MCP server the user already installed | Agents with MCP support | Same as route 3 when the Agent has no built-in tool |
+| 5 | Ask the user for one named click | Any | A permission dialog, login, or CAPTCHA that automation must not touch |
+
+Built-in computer use differs by Agent, plan, operating system, and region, and changes often; check the current documentation instead of assuming. Common limits: terminals and IDEs are click-only or excluded, administrator and privacy prompts cannot be approved, and Windows sessions may take over the foreground. Do not ask the user to install another Agent only to gain computer use; routes 1 and 2 complete most labs.
+
+When the user declines desktop control for an app, respect it and continue through routes 1 and 2. A Linux guest desktop can be driven entirely from SSH: set `DISPLAY` and `XAUTHORITY` for the logged-in session, type into a terminal with `xdotool`, and capture windows inside the guest. See [capture techniques](evidence-and-screenshots.md#capture-techniques).
+
+Whatever the route:
 
 1. Inspect the current application state.
 2. Perform one bounded action.
 3. Inspect the new state before deciding what follows.
 4. Save a screenshot only when it shows a planned result.
 
-For any VM platform:
+## Virtual machines
 
-1. Record the guest name, operating system, and power state.
+1. Record the guest name, operating system, architecture, and power state.
 2. Start an existing guest before considering a new VM.
 3. Inspect the guest desktop before running commands.
 4. Keep the VM frame visible only when guest identity matters.
 5. Capture application content at a readable scale.
 6. Do not shut down or suspend a guest unless the user asks or the task normally requires it.
+7. When the work is done and the user wants to keep the guest, remove task leftovers and temporary keys, keep installed course tools, and tell the user how to log in.
 
 ## Environment substitutions
 
