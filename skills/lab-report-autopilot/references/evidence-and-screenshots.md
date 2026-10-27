@@ -20,6 +20,7 @@ When a reference report sets the pattern, add one row per figure the reference s
 - For GUI configuration, capture the final field values and the resulting behavior, not only the settings dialog.
 - For a simple experiment, keep two to four figures that cover the main procedure and result.
 - For professional practice, use four to six figures only when each one proves a different work stage. A useful sequence is visible task result, artifact properties, complete operation, field-level verification, and final result.
+- These counts are defaults. An explicit figure requirement or a reference the user named to match sets the count instead.
 - Keep planned figure counts and evidence sequencing in working notes. Do not announce them in the submitted report.
 - Preserve failed-state screenshots in working files only when they explain an adaptation. Do not place a resolved permission or startup error in the finished report unless it affects the result.
 - Use a clear filename sequence such as `01-environment.png`, `02-query-result.png`, and `03-verification.png`.

@@ -52,6 +52,7 @@ Classify each input before writing:
 
 - **Template:** controls sections, fields, page layout, and visual style.
 - **Good reference:** shows useful step length, wording, or screenshot placement.
+- **Reference to match:** a report the user names as the target ("按这个来", "截图和 X 的一样"); its figures become the checklist described below.
 - **Counterexample:** shows problems to avoid.
 - **Task material:** supplies the required data, code, topology, and expected result.
 - **Private material:** follows the user's handling instructions and supplies only authorized facts. Read [user-data-and-privacy.md](references/user-data-and-privacy.md).
@@ -70,11 +71,13 @@ Record:
 - the visible result needed for each submitted claim;
 - length, date, filename, and file-format rules.
 
+When rules disagree, apply them in this order: explicit requirements in the assignment and template; the reference the user named to match; other good references; this Skill's defaults, such as figure counts and summary lengths. Show a conflict within the first group to the user before writing.
+
 Fill names, student numbers, class, teacher, organization, role, dates, and other fields only from values the user supplies or confirms. Use the same value everywhere it appears. Ask once for missing fields that the template requires. Leave signatures, scores, and approval fields empty unless the user explicitly provides them. Do not reuse a filename pattern from an unrelated report; when several reports for the same assignment share a pattern such as `学号+姓名+标题`, follow that shared pattern and ignore download artifacts such as a trailing ` 1`.
 
 When the user asks to add figures or sections to a report they already have, keep their existing text, figures, and fields unchanged, insert new content with the paragraph and image properties already used in that report, and match the existing figures' environment: user and host in the shell prompt, terminal theme, software versions, and node names. If the original environment is unavailable, use the closest one and tell the user exactly which visible values differ.
 
-When the user points to a reference report to match ("按这个来", "截图和 X 的一样"), treat the reference as the figure checklist, not a loose example. For every sub-item, reproduce the same number of figures covering the same subjects in the same order; when the reference shows two figures for a step (for example the modified input and its result), deliver both. Before finishing, walk each sub-item and confirm its figure count and subjects against the reference; a step that silently ends up with fewer figures than the reference is the most common complaint and must be caught here, not by the user.
+When the user points to a reference report to match ("按这个来", "截图和 X 的一样"), treat the reference as the figure checklist, not a loose example. For every sub-item, reproduce the same number of figures covering the same subjects in the same order; when the reference shows two figures for a step (for example the modified input and its result), deliver both. Match subjects, count, and order only: shell prompts, host names, and values stay the user's own, never those of another person's report. Before finishing, walk each sub-item and confirm its figure count and subjects against the reference; a step that silently ends up with fewer figures than the reference is the most common complaint and must be caught here, not by the user.
 
 Before editing Word, read [docx-qa.md](references/docx-qa.md) and complete the workspace's `format-contract.md`. Read requirements from ordinary paragraphs, table cells, headers, footers, text boxes, content controls, comments, and colored instruction text. Record every stated minimum word count, screenshot count, naming rule, field rule, and formatting rule with its source location.
 
