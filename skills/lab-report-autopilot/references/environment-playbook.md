@@ -56,6 +56,20 @@ Common routes include native Windows, Hyper-V, VMware Workstation, VirtualBox, a
 
 The helper Python exists to run this Skill's setup and image checks. Do not describe it in the submitted report unless Python itself is part of the experiment. Course software, compilers, database clients, Office, packet tools, and simulators still need their own availability checks.
 
+### Linux guests in VMware Workstation
+
+Students often keep VMware on a second drive. A `VMware VIX` folder under Program Files does not mean Workstation is there. Find it from the registry value `InstallPath` under `HKLM\SOFTWARE\WOW6432Node\VMware, Inc.\VMware Workstation`, then use `vmrun.exe` from that folder. Find guests by searching for `*.vmx` files.
+
+`vmrun` can drive a guest without desktop control once VMware Tools is running and the user has given the guest account:
+
+1. `vmrun -T ws start <vmx> gui` starts the guest with its window; poll `checkToolsState` until it reports `running`.
+2. Guest operations take `-gu <user> -gp <password>`. On "Invalid user name or password", ask the user for the exact account name as well as the password; a prompt such as `txs@ubuntu` names the account of older screenshots, not necessarily of this VM.
+3. `runScriptInGuest` does not return the script's output. Make the script write to a log file in the guest and fetch it with `CopyFileFromGuestToHost`; fetch screenshots the same way.
+4. Write guest scripts to `.sh` files with LF line endings and copy them in with `CopyFileFromHostToGuest`. Inline Bash inside a PowerShell double-quoted string loses `$()` and `$VAR` to PowerShell expansion.
+5. Run GUI commands as the logged-in desktop user with `DISPLAY=:0` and the user's D-Bus address; see [capture techniques](evidence-and-screenshots.md#capture-techniques).
+
+PowerShell output from native tools can arrive in the wrong encoding: set `$env:PYTHONIOENCODING = 'utf-8'` before Python helpers and `[Console]::OutputEncoding = [Text.Encoding]::UTF8` for UTF-8 tools; `wsl.exe` writes UTF-16LE.
+
 ## Linux and Kali execution
 
 1. Use native Linux, WSL, a VM, or a container according to the tool and screenshot requirement.
@@ -130,7 +144,7 @@ Whatever the route:
 4. Keep the VM frame visible only when guest identity matters.
 5. Capture application content at a readable scale.
 6. Do not shut down or suspend a guest unless the user asks or the task normally requires it.
-7. When the work is done and the user wants to keep the guest, remove task leftovers and temporary keys, keep installed course tools, and tell the user how to log in.
+7. When the work is done and the user wants to keep the guest, remove task leftovers and temporary keys, restore guest settings changed for automation (input method, screen lock, resolution), keep installed course tools, and tell the user how to log in.
 
 ## Environment substitutions
 

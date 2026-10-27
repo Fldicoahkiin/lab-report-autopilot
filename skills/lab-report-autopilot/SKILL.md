@@ -42,6 +42,8 @@ If no report workspace exists:
 
 Use `--kind practice` for professional practice. A supplied DOCX remains the report template; do not replace it with the generic Markdown draft.
 
+The command examples in this Skill use POSIX shell syntax. In PowerShell, call the interpreter with `& $PYTHON "$SKILL_DIR\scripts\init_report.py" ...`, continue lines with a backtick instead of `\`, and set `$env:PYTHONIOENCODING = 'utf-8'` so Chinese output is not garbled.
+
 ## Read the material
 
 Classify each input before writing:
