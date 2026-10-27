@@ -6,16 +6,16 @@
 
 [![Agent Skills](https://img.shields.io/badge/Agent_Skills-compatible-17202a?style=flat)](https://agentskills.io/)
 [![Windows first](https://img.shields.io/badge/environment-Windows_first-c9322f?style=flat)](#windows-优先但不写死环境)
-[![8 course packs](https://img.shields.io/badge/course_packs-8-17202a?style=flat)](#支持的课程)
+[![Any computing course](https://img.shields.io/badge/courses-any_computing_course-17202a?style=flat)](#支持的课程)
 [![MIT License](https://img.shields.io/badge/license-MIT-17202a?style=flat)](LICENSE)
 
-[安装](#安装) · [怎么使用](#怎么使用) · [自动完成哪些步骤](#自动完成哪些步骤) · [支持的课程](#支持的课程) · [仓库结构](#仓库结构)
+[安装](#安装) · [怎么使用](#怎么使用) · [自动完成哪些步骤](#自动完成哪些步骤) · [电脑怎么被操作](#电脑怎么被操作) · [支持的课程](#支持的课程) · [仓库结构](#仓库结构)
 
 很多大学计算机实验，操作十几分钟，截图、写步骤、贴 Word、调行距却能折腾半天。这个 Skill 让 Agent 从任务书开始接手：检查当前电脑，选择能运行的软件环境，完成实验，截下结果，再照学校模板交回 DOCX。
 
 它会真的执行命令、代码和图形软件。报告里的窗口、字段、帧号、查询结果和程序输出来自同一次操作，不靠生成一张“看起来像做过”的截图。
 
-仓库遵循 Agent Skills 目录结构，可装进 Claude Code、Codex、Cursor、GitHub Copilot、Gemini CLI、OpenCode 等支持 Skills 的 Agent。Agent 能控制桌面时，可以直接操作 Word、Wireshark 和课程软件；如果只能使用终端，则使用对应的命令行工具和脚本。
+仓库遵循 Agent Skills 目录结构，可装进 Claude Code、Codex、Cursor、GitHub Copilot、Gemini CLI、OpenCode 等支持 Skills 的 Agent。不需要为了“能点屏幕”换装某个特定 Agent：终端命令和应用脚本能完成大多数实验，Agent 自带 computer use 时再用它操作图形软件，见[电脑怎么被操作](#电脑怎么被操作)。
 
 <img width="1600" height="1040" alt="一次真实运行：Wireshark 抓包结果写入匿名 DOCX" src="assets/readme/report-proof.png">
 
@@ -112,6 +112,34 @@ flowchart LR
 6. 按模板写入步骤、结果、截图、说明和长度适中的总结。
 7. 渲染 DOCX，逐页处理错位、空白页、表格溢出、图片过小和字体缺失。
 
+## 电脑怎么被操作
+
+这个 Skill 不绑定某一个 Agent，也不要求为了“能点屏幕”去装别的 Agent。Agent 会按下面的顺序，选第一个能完成当前步骤的方式：
+
+| 顺序 | 方式 | 哪些 Agent 能用 | 典型用途 |
+| --- | --- | --- | --- |
+| 1 | 终端命令（本机，或 SSH 到虚拟机） | 所有能跑终端的 Agent | 安装、配置、命令行实验、传文件 |
+| 2 | 应用脚本 | 所有能跑终端的 Agent | macOS 用 AppleScript 控制 Word、终端、UTM；Windows 用 `vmrun` 在 VMware 虚拟机里执行脚本、取回文件，用 COM 控制 Word；Linux 虚拟机里用 xdotool 输入、ImageMagick 截窗口 |
+| 3 | Agent 自带的 computer use | 自带此功能的 Agent | 没有脚本接口的图形软件 |
+| 4 | 你已安装的桌面控制 MCP | 支持 MCP 的 Agent | 同上，Agent 没有自带功能时 |
+| 5 | 请你点一下 | 任意 | 管理员授权、登录、验证码等不该自动处理的地方 |
+
+两条已经实际跑通的链路：
+
+- **macOS + UTM**：AppleScript 和 `utmctl` 创建、启动 Ubuntu 虚拟机，SSH 进去安装和运行实验，在虚拟机桌面里用 xdotool 输入命令、ImageMagick 截图，最后用 AppleScript 让 Word 核对页数并导出 PDF。
+- **Windows + VMware Workstation**：从注册表找到 `vmrun`，`vmrun start` 启动虚拟机，`runScriptInGuest` 执行写好的 Bash 脚本，输出和截图写进虚拟机里的文件再用 `CopyFileFromGuestToHost` 取回，最后用 Word COM 核对页数并导出 PDF。虚拟机账号和密码由你提供，Agent 不会去猜。
+
+两条链路都没有用到 computer use。下面是 2026 年 10 月核对的各家自带 computer use 情况，变化很快，以官方文档为准：
+
+| Agent | 平台 | 说明 |
+| --- | --- | --- |
+| [Claude Code 桌面版](https://code.claude.com/docs/en/desktop) | macOS、Windows | 需要 Pro/Max，在设置里开启 |
+| [Claude Code CLI](https://code.claude.com/docs/en/computer-use) | macOS | 在 `/mcp` 里启用 `computer-use` |
+| [Codex（ChatGPT 桌面应用）](https://learn.chatgpt.com/docs/computer-use) | macOS、Windows | 安装 Computer Use 插件；不能操作终端，Windows 上会占用前台 |
+| 其他 Agent | — | 通过第 1、2 种方式，或接入桌面控制 MCP |
+
+你可以随时拒绝某个应用的控制权限，Agent 会改用终端和脚本继续。
+
 ## Windows 优先，但不写死环境
 
 大部分中国大学计算机课程围绕 Windows 软件、Office 和厂商教学工具安排，因此 Windows 是主路线。Skill 不会假设每个人都和作者使用相同的电脑或虚拟机。
@@ -126,9 +154,13 @@ Windows 上不会直接相信系统里的 `python` 或 `pip`。如果 Agent 没�
 | 用户使用 macOS | 软件原生支持就本机完成，否则接入任意可用的 Windows/Linux 环境 |
 | 没有课程要求的软件或系统 | 只暂停受影响的部分，说明缺少什么，不伪造成功画面 |
 
-支持 Hyper-V、VMware、VirtualBox、Parallels、WSL、Docker 和授权远程实验机，不把某一种虚拟化软件写成默认答案。
+支持 Hyper-V、VMware、VirtualBox、UTM、Parallels、WSL、Docker 和授权远程实验机，不把某一种虚拟化软件写成默认答案。
+
+Apple Silicon Mac 优先用 UTM：免费，能用 AppleScript 和 `utmctl` 脚本化；Parallels 也可以，但更重。Linux 实验用 ARM64 虚拟机（Ubuntu 的软件源要用 `ubuntu-ports` 镜像），Windows 软件用 Windows 11 ARM 虚拟机；eNSP 这类只能跑在 x86 上的软件，建议用学校机房或远程 Windows。
 
 ## 支持的课程
+
+课程包只覆盖常见课程的截图和分析规则，不是支持范围的上限。没有课程包的课程，例如 SDN、操作系统、Linux 运维、云计算、软件测试，Agent 会先查作业手册、官方文档、发布说明和源码仓库，确认版本和 CPU 架构对得上再动手。
 
 | 课程包 | 常见实验 |
 | --- | --- |
@@ -141,7 +173,7 @@ Windows 上不会直接相信系统里的 `python` 或 `pip`。如果 Agent 没�
 | `web-development` | HTML、CSS、JavaScript、响应式页面、控制台和网络请求 |
 | `computer-architecture` | 电路、CPU、寄存器、存储器、汇编和仿真波形 |
 
-课程规则分别放在独立 reference 中。一次任务只读取相关课程，不把数据库的截图要求套到抓包实验里。
+课程规则分别放在独立 reference 中。一次任务只读取相关课程，不把数据库的截图要求套到抓包实验里；课程名不在表里时，直接把课程名传给 `init_report.py --discipline`。
 
 ## 按你的模板和信息填写
 
@@ -173,7 +205,7 @@ lab-report-autopilot/
 │   ├── assets/templates/             # 草稿与模板格式核对表
 │   ├── references/
 │   │   ├── disciplines.md            # 课程选择表
-│   │   ├── discipline-*.md           # 八类课程规则
+│   │   ├── discipline-*.md           # 八类常见课程规则
 │   │   ├── environment-playbook.md   # Windows / Linux / macOS 路线
 │   │   ├── evidence-and-screenshots.md
 │   │   ├── user-data-and-privacy.md  # 用户信息与私人材料
@@ -189,9 +221,10 @@ lab-report-autopilot/
 └── LICENSE
 ```
 
-运行测试：
+运行测试（先装依赖）：
 
 ```bash
+python3 -m pip install -r skills/lab-report-autopilot/requirements.txt
 python3 -m unittest discover -s tests
 ```
 
