@@ -31,6 +31,52 @@ Avoid:
 - cropped images that hide the command, target, error, or result needed to verify the claim;
 - generated, downloaded, or borrowed images presented as execution evidence.
 
+<a id="capture-techniques"></a>
+## Capture techniques
+
+### Capture one window, not the desktop
+
+| Where | Tool |
+| --- | --- |
+| macOS host | `screencapture -x -o -l <window-id>`; get the window ID from `CGWindowListCopyWindowInfo`. The calling process needs Screen Recording permission. |
+| Linux guest, X11 | `import -window <id> out.png` (ImageMagick) with the ID from `xdotool search --onlyvisible --class <app>`; `import -window root` for the full guest screen |
+| Linux guest, Wayland | Switch the display manager to Xorg first (`WaylandEnable=false` in GDM) when scripted capture or `xdotool` is needed |
+| Agent computer use | The tool's own screenshot; crop a working copy to the target window |
+
+A capture of a VM window from the host shows the guest frame and its title; a capture from inside the guest shows only guest windows. Use the host capture when the virtualization product or guest name matters, and the guest capture for terminals and applications.
+
+### Prepare the screen before capturing
+
+- Size the terminal so the whole result fits: about 90–110 columns, 25–35 rows, a 12 pt monospace font. Enlarge the window rather than shrinking the font.
+- Close update notifiers, welcome wizards, and notification banners. On Ubuntu, set `Prompt=never` in `/etc/update-manager/release-upgrades` and mark first-run setup done.
+- Disable screen lock and blanking for the session so long steps do not end on a lock screen.
+- Remove noise before the step that produces it, for example create macOS tar archives with `COPYFILE_DISABLE=1 tar --no-xattrs` so Linux `tar` does not print a screen of extended-header warnings.
+
+### Keep the command in the frame
+
+- Send `clear` as its own command, then the command to capture. `clear; command` on one line wipes the command itself.
+- Show the command and its key result in one figure. Split long output into two figures, each starting with the command that produced it, instead of scrolling the command out of view.
+- Prefer short command lines. Move long scripts into a file and show `bash script.sh` or the relevant lines.
+- In interactive shells such as `mininet>`, use the shell's own clear (`sh clear`) and type subcommands one by one so each prompt stays visible.
+
+### Wait for the result before capturing
+
+- Detect completion from the program, not from a fixed sleep: a marker file written after the command, the returning prompt, or the absence of the process.
+- `pgrep -f pattern` run over SSH also matches the SSH command line that contains `pattern`. Use `pgrep -x name`, a narrower pattern, or a marker file.
+- After a GUI action, capture once to confirm the state changed before capturing the figure.
+
+### Drive GUI programs reliably
+
+- Some programs act only on the selected object; Tk-based tools such as MiniEdit open a node's Properties only after the node is left-clicked first.
+- Menus need the pointer to move onto the item before the click registers. Take a screenshot of the open menu to locate the item instead of guessing offsets from another menu.
+- Programs started with `sudo` need the display variables: `sudo -E` keeps `DISPLAY` and `XAUTHORITY`.
+- After each dialog closes, the next click may only focus the main window. Confirm with a capture before continuing.
+
+### Crop and keep evidence consistent
+
+- Crop drop shadows and long empty terminal areas on the working copy; keep the original untouched.
+- When the environment changes after a figure was taken, such as a renamed VM, a new IP address, or a re-uploaded file, retake every figure that shows the old value.
+
 ## Preserve and sanitize
 
 1. Keep the original capture unchanged.
@@ -45,13 +91,13 @@ Avoid:
 Run:
 
 ```text
-"$PYTHON" "$SKILL_DIR/scripts/evidence_manifest.py" evidence \
+"$PYTHON" "$SKILL_DIR/scripts/evidence_manifest.py" evidence/original \
   --output evidence-manifest.json
 ```
 
 Review:
 
-- every file opens;
+- every file opens and `error_count` is 0;
 - width and height are adequate for the intended placement;
 - duplicate hashes are either removed or justified;
 - filenames match the planned order;
@@ -67,7 +113,6 @@ Review:
 - Use one large figure instead of two small figures when terminal or UI text would otherwise become unreadable.
 - Crop empty margins, but retain application and target context.
 - Number figures in first-reference order.
-- When a packet filter leaves only one or two rows, drag the horizontal pane divider upward so the decoded protocol fields use the empty space below the packet list.
 - For a full-flow packet figure, leave enough list height to show the connection sequence. For request or response figures, favor the decoded-field pane.
 - When a saved artifact matters to the judgment, capture its properties or statistics: filename, interface, capture filter, packet count, drops, checksum, query row count, build result, or equivalent integrity signal.
 - Keep every figure in one value system. Do not combine evidence from separate runs when addresses, ports, filenames, versions, timestamps, or task identifiers differ.
