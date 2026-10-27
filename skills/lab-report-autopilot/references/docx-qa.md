@@ -6,7 +6,7 @@ When a supplied DOCX controls the output:
 
 1. keep the source file unchanged;
 2. record its path, SHA-256, intended opening application, and visible page count;
-3. use the `documents` skill's template distillation workflow;
+3. use the host Agent's DOCX tools when it has them; otherwise edit a copy with a library that preserves unknown package parts, such as `python-docx` or direct XML edits;
 4. identify body, table, header, footer, text-box, content-control, comment, and drawing-text slots;
 5. copy every explicit instruction into `format-contract.md`, including requirements written in red or placed inside a table;
 6. preserve unknown package parts and teacher-owned fields;
@@ -43,8 +43,7 @@ If two parts of the template conflict, show the conflict to the user before writ
 - Avoid fixed-height rows for screenshots or long prose.
 - Prevent a heading from being stranded at the bottom of a page.
 - Remove example red text, placeholder dates, and instructional notes only when the matching student content is ready.
-- Leave signatures, teacher comments, and scores blank unless explicitly provided.
-- If the user supplies the teacher and technical title, fill both the task sheet and report information table with the same values. Do not fill signature, score, or approval fields.
+- If the user supplies the teacher and technical title, fill both the task sheet and report information table with the same values. Signature, score, and approval fields stay blank.
 - When replacing text in an existing paragraph or table cell, preserve its paragraph properties and only replace the intended runs. Assigning plain `cell.text` may remove line spacing, character-grid settings, font hints, and other template behavior.
 - Keep the template's stated font size for filled fields. If a value wraps, first confirm that the original column widths, cell margins, paragraph properties, and font mappings were preserved. Do not hide the problem by shrinking the text.
 - Keep the source template hash unchanged. Build from a working copy and place the finished file at a different path.
@@ -60,7 +59,11 @@ If two parts of the template conflict, show the conflict to the user before writ
 
 ## Render and inspect
 
-Use the `documents` skill renderer after every layout-sensitive edit. Inspect every page at 100% zoom.
+Render with the host Agent's document renderer or LibreOffice (`soffice --headless --convert-to pdf`) after every layout-sensitive edit, and inspect every page at 100% zoom.
+
+Page count and pagination come from the application the template targets. LibreOffice and Microsoft Word can differ by several pages on the same file because they snap line spacing to the document grid differently. When Word is available, read the page count from Word and export a PDF from Word for the final inspection.
+
+A filled field that wraps to an extra line can push a template's spacer paragraphs onto the next page and leave it blank. Remove only those empty spacer paragraphs, keep any page break they carried, record the change in the contract, and re-check in the target application.
 
 Check:
 
