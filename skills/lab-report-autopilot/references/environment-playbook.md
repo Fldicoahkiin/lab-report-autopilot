@@ -53,13 +53,15 @@ Do not assume that `python`, `python3`, `py`, or `pip` is usable merely because 
 The bootstrap takes the first of:
 
 1. a virtual environment already in the workspace;
-2. the interpreter passed with `-SystemPython`; if it is not a working Python 3.10 or newer, or cannot create a virtual environment, the script stops instead of downloading;
+2. the interpreter passed with `-SystemPython`; if it is not a working Python 3.10 or newer, or cannot create a virtual environment, the script stops instead of downloading, and running it again without the flag continues with the steps below;
 3. `py -3`, `python`, or `python3` on PATH;
 4. a CPython 3.12 installed under the workspace from python.org, then npmmirror, then Huawei Cloud; each download must match the pinned SHA-256.
 
-Host Agents often ship Python without putting it on PATH. Search the host's install and runtime folders for `python.exe` before letting the bootstrap download; for example, DeepSeek Harness keeps one at `...\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe`.
+A first run that downloads and installs Python can take several minutes; give the command a timeout of 10 minutes when the host allows it.
 
-python.org often resets connections from mainland-China networks (`基础连接已经关闭`). When every download source fails, find a host runtime and pass `-SystemPython`. `pip` reads `PIP_INDEX_URL` from the environment; when PyPI is unreachable, set it to a mirror the user accepts, such as `https://pypi.tuna.tsinghua.edu.cn/simple`, and run the bootstrap again. PyPI packages are not hash-pinned, so the bootstrap does not choose an index itself.
+Host Agents often ship Python without putting it on PATH. Before running the bootstrap, use the host's own report of its runtime when it has one, such as DeepSeek Harness's `load_workspace_dependencies` tool; otherwise search the host's install and runtime folders for `python.exe`, for example DeepSeek Harness's `...\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe`. When that Python can `import PIL`, as DeepSeek Harness's can, use it as `$PYTHON` and skip the bootstrap; otherwise pass it with `-SystemPython`.
+
+python.org often resets connections from mainland-China networks (`基础连接已经关闭`), so the bootstrap falls back to the mirrors; a host runtime avoids the download altogether. `pip` reads `PIP_INDEX_URL` from the environment; when PyPI is unreachable, set it to a mirror the user accepts, such as `https://pypi.tuna.tsinghua.edu.cn/simple`, and run the bootstrap again. PyPI packages are not hash-pinned, so the bootstrap does not choose an index itself.
 
 ### Linux guests in VMware Workstation
 

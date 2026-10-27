@@ -28,7 +28,7 @@ $runtime = & powershell.exe -NoProfile -ExecutionPolicy Bypass `
 $PYTHON = $runtime.python
 ```
 
-The bootstrap builds a virtual environment inside the report workspace from a working Python and downloads a checksum-pinned CPython only when it finds none. A host Agent often ships its own Python off `PATH`; find it first and pass it with `-SystemPython <path>`, because the download often fails on mainland-China networks. See [Windows helper runtime](references/environment-playbook.md#windows-helper-runtime) for the search order, where hosts keep Python, and blocked downloads.
+The bootstrap builds a virtual environment inside the report workspace from a working Python and downloads a checksum-pinned CPython only when it finds none. A host Agent often ships its own Python off `PATH`; find it first. Use it directly when it can `import PIL`, otherwise pass it with `-SystemPython <path>`, because the download often fails on mainland-China networks. See [Windows helper runtime](references/environment-playbook.md#windows-helper-runtime) for the search order, where hosts keep Python, and blocked downloads.
 
 On Linux or macOS, create the same workspace virtual environment from a Python 3.10 or newer supplied by the host Agent or the system; replace `python3` when it is older. Do not install packages into an unrelated global Python.
 
