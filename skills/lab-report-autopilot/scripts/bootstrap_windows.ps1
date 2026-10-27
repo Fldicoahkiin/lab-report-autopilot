@@ -15,6 +15,10 @@ $PythonMinor = $PythonVersion -replace '\.\d+$', ''
 $WorkspacePath = [System.IO.Path]::GetFullPath($Workspace)
 $RuntimePath = Join-Path $WorkspacePath ".lab-report-runtime"
 $PrivatePythonPath = Join-Path $RuntimePath "python-$PythonVersion"
+# stdout carries only the runtime JSON, and Windows PowerShell 5.1 turns a child's
+# stderr lines into errors when the caller redirects them, so fallbacks taken on
+# the way to a working runtime are recorded here instead.
+$BootstrapLog = Join-Path $RuntimePath "bootstrap.log"
 # python.org resets connections from many mainland-China networks. The mirrors
 # serve the same files, and every download must match the pinned SHA-256.
 $DownloadBases = @(
@@ -237,8 +241,7 @@ function Install-PrivatePython {
                 $Failure = "$Download ($($_.Exception.Message))"
             }
             $Failures += $Failure
-            # stdout carries the runtime JSON, so diagnostics go to stderr.
-            [Console]::Error.WriteLine("CPython download failed: $Failure")
+            [System.IO.File]::AppendAllText($BootstrapLog, "CPython download failed: $Failure`r`n")
         }
         if ($NeedsDownload) {
             throw "Could not download a verified CPython installer from any source. " +
@@ -330,8 +333,10 @@ if (-not (Test-PythonExecutable $Python -WithPip)) {
             if ($SystemPython) {
                 throw
             }
-            # stdout carries the runtime JSON, so diagnostics go to stderr.
-            [Console]::Error.WriteLine("$($_.Exception.Message) Installing a workspace Python instead.")
+            [System.IO.File]::AppendAllText(
+                $BootstrapLog,
+                "$($_.Exception.Message) Trying a registered or downloaded Python $PythonMinor instead.`r`n"
+            )
         }
     }
 }

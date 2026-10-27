@@ -25,6 +25,7 @@ On Windows, unless the host Agent provides a known isolated runtime, run the boo
 $runtime = & powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -File "$SKILL_DIR\scripts\bootstrap_windows.ps1" `
   -Workspace "work\report-name" | ConvertFrom-Json
+if ($LASTEXITCODE) { throw "Bootstrap failed; read the error above." }
 $PYTHON = $runtime.python
 ```
 
