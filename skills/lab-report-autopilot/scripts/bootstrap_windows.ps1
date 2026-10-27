@@ -80,16 +80,21 @@ function Invoke-ProcessWithTimeout {
 }
 
 function Test-PythonExecutable {
-    param([string]$Path)
+    param(
+        [string]$Path,
+        # An interrupted venv creation can leave python.exe without pip.
+        [switch]$WithPip
+    )
 
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
         return $false
     }
 
+    $Modules = if ($WithPip) { "sys, pip" } else { "sys" }
     try {
         $Result = Invoke-ProcessWithTimeout `
             -FilePath $Path `
-            -Arguments '-X utf8 -c "import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)"' `
+            -Arguments "-X utf8 -c `"import $Modules; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)`"" `
             -TimeoutSeconds 20
         return $Result.ExitCode -eq 0
     }
@@ -260,15 +265,16 @@ function New-IsolatedPython {
     )
 
     $Python = Join-Path $Directory "Scripts\python.exe"
-    if (Test-PythonExecutable $Python) {
+    if (Test-PythonExecutable $Python -WithPip) {
         return $Python
     }
 
+    # --clear drops what a broken earlier venv left, such as packages built for another Python.
     $Result = Invoke-ProcessWithTimeout `
         -FilePath $SourcePython `
-        -Arguments "-X utf8 -m venv `"$Directory`"" `
+        -Arguments "-X utf8 -m venv --clear `"$Directory`"" `
         -TimeoutSeconds 180
-    if ($Result.ExitCode -ne 0 -or -not (Test-PythonExecutable $Python)) {
+    if ($Result.ExitCode -ne 0 -or -not (Test-PythonExecutable $Python -WithPip)) {
         throw "Could not create a virtual environment with ${SourcePython}: $($Result.StdErr.Trim())"
     }
     return $Python
@@ -279,12 +285,12 @@ $PrivateVenv = Join-Path $RuntimePath "venv-$PythonVersion"
 $Python = Join-Path $ExternalVenv "Scripts\python.exe"
 $Source = "existing-venv"
 
-if (-not (Test-PythonExecutable $Python)) {
+if (-not (Test-PythonExecutable $Python -WithPip)) {
     $Python = Join-Path $PrivateVenv "Scripts\python.exe"
     $Source = "private-venv"
 }
 
-if (-not (Test-PythonExecutable $Python)) {
+if (-not (Test-PythonExecutable $Python -WithPip)) {
     if ($SystemPython) {
         # The caller chose this interpreter to avoid the download, so never replace it silently.
         if (-not (Test-PythonExecutable $SystemPython)) {
@@ -310,7 +316,7 @@ if (-not (Test-PythonExecutable $Python)) {
     }
 }
 
-if (-not (Test-PythonExecutable $Python)) {
+if (-not (Test-PythonExecutable $Python -WithPip)) {
     $PrivatePython = Install-PrivatePython
     $Python = New-IsolatedPython -SourcePython $PrivatePython -Directory $PrivateVenv
     $Source = "workspace-python"
