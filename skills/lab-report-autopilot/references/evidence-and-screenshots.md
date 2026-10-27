@@ -10,6 +10,8 @@ Create one row per result that the report will claim:
 
 Do not draft a success claim until its proof exists.
 
+When a reference report sets the pattern, add one planning row per figure the reference shows, keyed to the same sub-item, so the plan carries the reference's full figure count before capture starts. Reproduce every figure of a multi-figure step, not just the final result. Verify the delivered set against this plan at the end: each sub-item has at least as many figures as the reference, covering the same subjects.
+
 ## Capture the right state
 
 - Capture the result after the action completes.

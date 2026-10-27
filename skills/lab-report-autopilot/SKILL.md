@@ -29,6 +29,8 @@ $PYTHON = $runtime.python
 
 The bootstrap tests `py`, `python`, and `python3`, creates a task-local virtual environment, and installs the bundled requirements there. If no usable interpreter exists, it downloads a checksum-pinned CPython installer from python.org and installs it under the report workspace without administrator rights, PATH changes, file associations, shortcuts, or global `pip`.
 
+A host Agent often ships its own Python but does not put it on `PATH`, so the bootstrap misses it and falls back to the download, which frequently fails on mainland-China networks (`基础连接已经关闭` / connection reset to python.org). Before relying on that download, look for a bundled interpreter — for example DeepSeek Harness keeps one under `...\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe` — and pass it with `-SystemPython <path>` so the bootstrap builds the virtual environment from it instead of downloading. A host Agent that bundles Office skills (its own `office-docx` with LibreOffice) usually bundles this runtime too.
+
 On Linux or macOS, resolve a working Python 3.10 or newer from the host Agent or the current system, create a task-local virtual environment, and install `requirements.txt` into that environment. Do not install packages into an unrelated global Python.
 
 If no report workspace exists:
@@ -71,6 +73,8 @@ Record:
 Fill names, student numbers, class, teacher, organization, role, dates, and other fields only from values the user supplies or confirms. Use the same value everywhere it appears. Ask once for missing fields that the template requires. Leave signatures, scores, and approval fields empty unless the user explicitly provides them. Do not reuse a filename pattern from an unrelated report; when several reports for the same assignment share a pattern such as `学号+姓名+标题`, follow that shared pattern and ignore download artifacts such as a trailing ` 1`.
 
 When the user asks to add figures or sections to a report they already have, keep their existing text, figures, and fields unchanged, insert new content with the paragraph and image properties already used in that report, and match the existing figures' environment: user and host in the shell prompt, terminal theme, software versions, and node names. If the original environment is unavailable, use the closest one and tell the user exactly which visible values differ.
+
+When the user points to a reference report to match ("按这个来", "截图和 X 的一样"), treat the reference as the figure checklist, not a loose example. For every sub-item, reproduce the same number of figures covering the same subjects in the same order; when the reference shows two figures for a step (for example the modified input and its result), deliver both. Before finishing, walk each sub-item and confirm its figure count and subjects against the reference; a step that silently ends up with fewer figures than the reference is the most common complaint and must be caught here, not by the user.
 
 Before editing Word, read [docx-qa.md](references/docx-qa.md) and complete the workspace's `format-contract.md`. Read requirements from ordinary paragraphs, table cells, headers, footers, text boxes, content controls, comments, and colored instruction text. Record every stated minimum word count, screenshot count, naming rule, field rule, and formatting rule with its source location.
 

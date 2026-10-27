@@ -2,7 +2,8 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$Workspace,
-    [string]$Requirements
+    [string]$Requirements,
+    [string]$SystemPython
 )
 
 Set-StrictMode -Version Latest
@@ -176,12 +177,22 @@ function Install-PrivatePython {
     }
 
     if ($NeedsDownload) {
-        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        Invoke-WebRequest `
-            -UseBasicParsing `
-            -Uri $Download `
-            -OutFile $Installer `
-            -TimeoutSec 120
+        $Protocols = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+        if ([enum]::IsDefined([Net.SecurityProtocolType], "Tls13")) {
+            $Protocols = $Protocols -bor [Net.SecurityProtocolType]::Tls13
+        }
+        [Net.ServicePointManager]::SecurityProtocol = $Protocols
+        try {
+            Invoke-WebRequest `
+                -UseBasicParsing `
+                -Uri $Download `
+                -OutFile $Installer `
+                -TimeoutSec 120
+        }
+        catch {
+            throw "Could not download CPython from python.org ($Download): $($_.Exception.Message). " +
+                "If the host already provides a Python 3.10+ runtime off PATH, re-run with -SystemPython <path> to that python.exe instead of downloading."
+        }
     }
 
     $ActualHash = (Get-FileHash -LiteralPath $Installer -Algorithm SHA256).Hash.ToLowerInvariant()
@@ -252,9 +263,14 @@ if (-not (Test-PythonExecutable $Python)) {
 }
 
 if (-not (Test-PythonExecutable $Python)) {
-    $SystemPython = Find-WorkingPython
-    if ($SystemPython) {
-        $Python = New-IsolatedPython -SourcePython $SystemPython -Directory $ExternalVenv
+    $SourcePython = if ($SystemPython -and (Test-PythonExecutable $SystemPython)) {
+        $SystemPython
+    }
+    else {
+        Find-WorkingPython
+    }
+    if ($SourcePython) {
+        $Python = New-IsolatedPython -SourcePython $SourcePython -Directory $ExternalVenv
         $Source = "system-python"
     }
 }
