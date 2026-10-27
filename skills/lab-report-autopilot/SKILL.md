@@ -76,7 +76,7 @@ Record:
 - the visible result needed for each submitted claim;
 - length, date, filename, and file-format rules.
 
-When rules disagree, apply them in this order: explicit requirements in the assignment and template; the reference the user named to match; other good references; this Skill's defaults, such as figure counts and summary lengths. Show a conflict within the first group to the user before writing.
+When rules disagree, apply them in this order: explicit requirements from the user, the assignment, and the template; the reference the user named to match; other good references; this Skill's defaults, such as figure counts and summary lengths. Show a conflict within the first group to the user before writing.
 
 Fill names, student numbers, class, teacher, organization, role, dates, and other fields only from values the user supplies or confirms. Use the same value everywhere it appears. Ask once for missing fields that the template requires. Leave signatures, scores, and approval fields empty unless the user explicitly provides them. Do not reuse a filename pattern from an unrelated report; when several reports for the same assignment share a pattern such as `学号+姓名+标题`, follow that shared pattern and ignore download artifacts such as a trailing ` 1`.
 
