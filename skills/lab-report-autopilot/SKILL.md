@@ -10,6 +10,8 @@ Drive the report from assignment to delivery: inspect the files, choose the envi
 
 Never invent software output, screenshots, user details, citations, or environment values. Interrupt only when an unavailable environment, missing authorization, or missing required field would make the report false.
 
+Never guess, brute-force, or derive passwords, including from student numbers or names. When a VM, guest account, remote host, or application needs credentials, ask the user once for both the account name and the password, then try exactly that pair. Keep credentials out of notes, scripts saved to disk, logs, screenshots, and the report; prefer an SSH key or a temporary `sudoers` rule that is removed when the work ends.
+
 ## Set up
 
 Resolve the directory containing this `SKILL.md` as `SKILL_DIR`. Run bundled scripts by absolute path; the current directory may be the user's report folder rather than the skill folder.
