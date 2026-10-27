@@ -221,11 +221,12 @@ lab-report-autopilot/
 └── LICENSE
 ```
 
-运行测试（先装依赖）：
+在虚拟环境里运行测试：
 
 ```bash
-python3 -m pip install -r skills/lab-report-autopilot/requirements.txt
-python3 -m unittest discover -s tests
+python3 -m venv .venv
+.venv/bin/python -m pip install -r skills/lab-report-autopilot/requirements.txt
+.venv/bin/python -m unittest discover -s tests
 ```
 
 ## 许可
