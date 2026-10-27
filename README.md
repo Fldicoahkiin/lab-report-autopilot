@@ -144,7 +144,7 @@ flowchart LR
 
 大部分中国大学计算机课程围绕 Windows 软件、Office 和厂商教学工具安排，因此 Windows 是主路线。Skill 不会假设每个人都和作者使用相同的电脑或虚拟机。
 
-Windows 上不会直接相信系统里的 `python` 或 `pip`。如果 Agent 没有自带运行时，Skill 会先运行 PowerShell 引导脚本：能用的 Python 被放进当前任务的虚拟环境；找不到或无法运行时，才从 python.org 下载经过哈希校验的 CPython，并装在报告工作区。整个过程不需要管理员权限，也不修改 PATH、文件关联或全局包。
+Windows 上不会直接相信系统里的 `python` 或 `pip`。如果 Agent 没有自带运行时，Skill 会先运行 PowerShell 引导脚本：能用的 Python 被放进当前任务的虚拟环境；找不到或无法运行时，才下载经过哈希校验的 CPython，并装在报告工作区；python.org 连不上时改用 npmmirror 和华为云镜像，文件哈希必须一致。整个过程不需要管理员权限，也不修改 PATH、文件关联或全局包。
 
 | 条件 | 选择 |
 | --- | --- |

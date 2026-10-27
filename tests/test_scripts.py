@@ -204,7 +204,7 @@ class WindowsBootstrapTests(unittest.TestCase):
     def test_pins_official_python_installers(self) -> None:
         script = (SKILL_DIR / "scripts/bootstrap_windows.ps1").read_text()
 
-        self.assertIn("https://www.python.org/ftp/python/", script)
+        self.assertIn('"https://www.python.org/ftp/python"', script)
         self.assertIn("python-$PythonVersion-amd64.exe", script)
         self.assertIn("python-$PythonVersion-arm64.exe", script)
         self.assertIn("Get-FileHash", script)

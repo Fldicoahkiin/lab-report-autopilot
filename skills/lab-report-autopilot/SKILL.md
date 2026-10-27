@@ -27,7 +27,7 @@ $runtime = & powershell.exe -NoProfile -ExecutionPolicy Bypass `
 $PYTHON = $runtime.python
 ```
 
-The bootstrap tests `py`, `python`, and `python3`, creates a task-local virtual environment, and installs the bundled requirements there. If no usable interpreter exists, it downloads a checksum-pinned CPython installer from python.org and installs it under the report workspace without administrator rights, PATH changes, file associations, shortcuts, or global `pip`.
+The bootstrap tests `py`, `python`, and `python3`, creates a task-local virtual environment, and installs the bundled requirements there. If no usable interpreter exists, it downloads a checksum-pinned CPython installer from python.org, or from the npmmirror and Huawei Cloud mirrors when python.org fails, and installs it under the report workspace without administrator rights, PATH changes, file associations, shortcuts, or global `pip`.
 
 A host Agent often ships its own Python but does not put it on `PATH`, so the bootstrap misses it and falls back to the download, which frequently fails on mainland-China networks (`基础连接已经关闭` / connection reset to python.org). Before relying on that download, look for a bundled interpreter — for example DeepSeek Harness keeps one under `...\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe` — and pass it with `-SystemPython <path>` so the bootstrap builds the virtual environment from it instead of downloading. A host Agent that bundles Office skills (its own `office-docx` with LibreOffice) usually bundles this runtime too.
 

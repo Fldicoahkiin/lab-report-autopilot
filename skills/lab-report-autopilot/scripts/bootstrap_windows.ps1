@@ -14,6 +14,13 @@ $PythonVersion = "3.12.10"
 $WorkspacePath = [System.IO.Path]::GetFullPath($Workspace)
 $RuntimePath = Join-Path $WorkspacePath ".lab-report-runtime"
 $PrivatePythonPath = Join-Path $RuntimePath "python-$PythonVersion"
+# python.org resets connections from many mainland-China networks. The mirrors
+# serve the same files, and every download must match the pinned SHA-256.
+$DownloadBases = @(
+    "https://www.python.org/ftp/python"
+    "https://registry.npmmirror.com/-/binary/python"
+    "https://mirrors.huaweicloud.com/python"
+)
 
 if (-not $Requirements) {
     $Requirements = Join-Path (Split-Path -Parent $PSScriptRoot) "requirements.txt"
@@ -172,7 +179,6 @@ function Install-PrivatePython {
 
     $Spec = Get-InstallerSpec
     $Installer = Join-Path $RuntimePath $Spec.File
-    $Download = "https://www.python.org/ftp/python/$PythonVersion/$($Spec.File)"
     $NeedsDownload = -not (Test-Path -LiteralPath $Installer -PathType Leaf)
 
     if (-not $NeedsDownload) {
@@ -186,22 +192,34 @@ function Install-PrivatePython {
             $Protocols = $Protocols -bor [Net.SecurityProtocolType]::Tls13
         }
         [Net.ServicePointManager]::SecurityProtocol = $Protocols
-        try {
-            Invoke-WebRequest `
-                -UseBasicParsing `
-                -Uri $Download `
-                -OutFile $Installer `
-                -TimeoutSec 120
+        $Failures = @()
+        foreach ($Base in $DownloadBases) {
+            $Download = "$Base/$PythonVersion/$($Spec.File)"
+            try {
+                Invoke-WebRequest `
+                    -UseBasicParsing `
+                    -Uri $Download `
+                    -OutFile $Installer `
+                    -TimeoutSec 120
+                $ActualHash = (Get-FileHash -LiteralPath $Installer -Algorithm SHA256).Hash.ToLowerInvariant()
+                if ($ActualHash -eq $Spec.Sha256) {
+                    $NeedsDownload = $false
+                    break
+                }
+                $Failure = "$Download (checksum mismatch)"
+            }
+            catch {
+                $Failure = "$Download ($($_.Exception.Message))"
+            }
+            $Failures += $Failure
+            # stdout carries the runtime JSON, so diagnostics go to stderr.
+            [Console]::Error.WriteLine("CPython download failed: $Failure")
         }
-        catch {
-            throw "Could not download CPython from python.org ($Download): $($_.Exception.Message). " +
-                "If the host already provides a Python 3.10+ runtime off PATH, re-run with -SystemPython <path> to that python.exe instead of downloading."
+        if ($NeedsDownload) {
+            throw "Could not download a verified CPython installer from any source. " +
+                "If the host already provides a Python 3.10+ runtime off PATH, re-run with -SystemPython <path> to that python.exe instead of downloading. " +
+                "Failures: $($Failures -join '; ')"
         }
-    }
-
-    $ActualHash = (Get-FileHash -LiteralPath $Installer -Algorithm SHA256).Hash.ToLowerInvariant()
-    if ($ActualHash -ne $Spec.Sha256) {
-        throw "Python installer checksum verification failed: $Installer"
     }
 
     $InstallLog = Join-Path $RuntimePath "python-install.log"
@@ -315,7 +333,8 @@ if (Test-Path -LiteralPath $Requirements -PathType Leaf) {
             -Arguments "-X utf8 -m pip install --disable-pip-version-check -r `"$Requirements`"" `
             -TimeoutSeconds 600
         if ($Result.ExitCode -ne 0) {
-            throw "Dependency installation failed: $($Result.StdErr.Trim())"
+            throw "Dependency installation failed: $($Result.StdErr.Trim()) " +
+                "If PyPI is unreachable, set `$env:PIP_INDEX_URL to a PyPI mirror the user accepts and re-run."
         }
         [System.IO.File]::WriteAllText(
             $Marker,
