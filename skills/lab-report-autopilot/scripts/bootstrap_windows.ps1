@@ -14,7 +14,12 @@ $PythonVersion = "3.12.10"
 $PythonMinor = $PythonVersion -replace '\.\d+$', ''
 $WorkspacePath = [System.IO.Path]::GetFullPath($Workspace)
 $RuntimePath = Join-Path $WorkspacePath ".lab-report-runtime"
-$PrivatePythonPath = Join-Path $RuntimePath "python-$PythonVersion"
+# The CPython installer registers a version once per Windows user, so a downloaded
+# copy lives in one per-user folder that every report workspace reuses, not in a
+# workspace the student may delete after submitting.
+$PrivatePythonPath = Join-Path `
+    ([Environment]::GetFolderPath("LocalApplicationData")) `
+    "lab-report-autopilot\python-$PythonVersion"
 # stdout carries only the runtime JSON, and Windows PowerShell 5.1 turns a child's
 # stderr lines into errors when the caller redirects them, so fallbacks taken on
 # the way to a working runtime are recorded here instead.
@@ -197,7 +202,7 @@ function Install-PrivatePython {
     $Spec = Get-InstallerSpec
     # With Python $PythonMinor already installed for this user by the python.org
     # installer (PEP 514; the tag is sys.winver), for example the student's own
-    # copy or one an earlier report workspace installed, the installer would modify
+    # copy or one an older bootstrap put in a report workspace, the installer would modify
     # that install instead of using TargetDir, and the options below could remove
     # features from it. Never run the installer over one. That installer always
     # writes ExecutablePath; conda registers InstallPath alone and is not affected.

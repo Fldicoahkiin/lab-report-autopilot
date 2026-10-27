@@ -56,7 +56,7 @@ The bootstrap takes the first of:
 2. the interpreter passed with `-SystemPython`; if it is not a working Python 3.10 or newer, or cannot create a virtual environment, the script stops instead of downloading, and running it again without the flag continues with the steps below;
 3. `py -3`, `python`, or `python3` on PATH; if it cannot create a virtual environment, the reason goes to `bootstrap.log` and the search continues;
 4. a Python 3.12 that the python.org installer already installed for this Windows user; if it does not start, the script stops and suggests running again, a repair, or `-SystemPython`, because the installer would modify that install instead of adding another;
-5. a CPython 3.12 installed under the workspace from npmmirror, then Huawei Cloud, then python.org; each download must match the pinned SHA-256.
+5. a CPython 3.12 downloaded from npmmirror, then Huawei Cloud, then python.org, each file matching the pinned SHA-256, and installed once for this Windows user under `%LOCALAPPDATA%\lab-report-autopilot`; later report workspaces reuse it, and it can be removed in Settings > Apps.
 
 A first run that downloads and installs Python can take several minutes; give the command a timeout of 10 minutes when the host allows it. A run that was cut off can simply be repeated.
 
