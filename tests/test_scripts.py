@@ -156,7 +156,11 @@ class ProbeEnvironmentTests(unittest.TestCase):
             executable.parent.mkdir()
             executable.touch()
 
-            with patch.dict(os.environ, {"PROGRAMFILES": directory}, clear=True):
+            # Keep a real Windows registry, such as one listing VMware, out of the result.
+            with (
+                patch.dict(os.environ, {"PROGRAMFILES": directory}, clear=True),
+                patch.object(probe_environment, "registry_apps", return_value=[]),
+            ):
                 apps = probe_environment.installed_apps("Windows")
 
             self.assertEqual(apps, [str(executable)])
