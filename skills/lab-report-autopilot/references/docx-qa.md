@@ -63,6 +63,11 @@ Render with the host Agent's document renderer or LibreOffice (`soffice --headle
 
 Page count and pagination come from the application the template targets. LibreOffice and Microsoft Word can differ by several pages on the same file because they snap line spacing to the document grid differently. When Word is available, read the page count from Word and export a PDF from Word for the final inspection.
 
+Drive Word from a script on a copy of the deliverable, opened read-only, and close it without saving:
+
+- Windows: `Word.Application` through COM. Set `Visible = $false` and `DisplayAlerts = 0`, open with `Documents.Open(path, $false, $true)`, read `ComputeStatistics(2)` for pages, export with `ExportAsFixedFormat(pdf, 17)`, then `Close($false)` and `Quit()` in a `finally` block.
+- macOS: AppleScript `tell application "Microsoft Word"`, `compute statistics <doc> statistic statistic pages`, and `save as <doc> file name <pdf> file format format PDF`. Word is sandboxed; write the PDF under `~/Library/Containers/com.microsoft.Word/Data/` and move it afterwards.
+
 A filled field that wraps to an extra line can push a template's spacer paragraphs onto the next page and leave it blank. Remove only those empty spacer paragraphs, keep any page break they carried, record the change in the contract, and re-check in the target application.
 
 Check:
@@ -108,3 +113,5 @@ If fonts render as boxes or substitute poorly, install or select an available co
 ## Delivery
 
 Return only the requested final DOCX unless the user asks for evidence files, source code, manifests, or rendered pages. Keep QA renders and intermediate copies outside the deliverable folder.
+
+Record the delivered file's SHA-256 and keep an untouched copy in the workspace. Opening the deliverable in WPS or Word, or copying another version over it, can change it after delivery. On a later turn, compare the hash before reusing or re-exporting the file, and rebuild from the workspace copy if it differs.
