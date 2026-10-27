@@ -2,15 +2,15 @@
 
 ## Build an evidence plan
 
-Create one row per result that the report will claim:
+Fill the workspace's `evidence-plan.md` with one row per planned figure; a claim that needs two figures gets two rows:
 
-| ID | Claim | Action | Visible proof | App/host | Planned caption |
-| --- | --- | --- | --- | --- | --- |
-| E01 | Database query returned three rows | Run the final SELECT | Query text, result grid, and row count | SSMS on Windows | 图1 查询条件及返回结果 |
+| ID | 子项 | 参考图 | 报告结论 | 产生结论的操作 | 画面中必须可见的内容 | 软件/主机 | 图题 | 文件名 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| E01 | 4.1 | 参考图 2 | 查询返回 3 条记录 | 执行最终 SELECT | 查询语句、结果网格和行数 | Windows 上的 SSMS | 图1 查询条件及返回结果 | 01-query-result.png | 待执行 |
 
 Do not draft a success claim until its proof exists.
 
-When a reference report sets the pattern, add one planning row per figure the reference shows, keyed to the same sub-item, so the plan carries the reference's full figure count before capture starts. Reproduce every figure of a multi-figure step, not just the final result. Verify the delivered set against this plan at the end: each sub-item has at least as many figures as the reference, covering the same subjects.
+When a reference report sets the pattern, add one row per figure the reference shows, with its sub-item in `子项` and its figure number in `参考图`, so the plan carries the reference's full figure count before capture starts. Reproduce every figure of a multi-figure step, not just the final result. Verify the delivered set against this plan at the end: each sub-item has at least as many figures as the reference, covering the same subjects. Leave `参考图` empty when no reference was named.
 
 ## Capture the right state
 

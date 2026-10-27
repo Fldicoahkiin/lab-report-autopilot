@@ -44,6 +44,8 @@ class InitReportTests(unittest.TestCase):
             self.assertTrue((output / "format-contract.md").is_file())
             config = json.loads((output / "report-config.json").read_text())
             self.assertEqual(config["title"], "ARP 抓包分析")
+            plan = (output / "evidence-plan.md").read_text(encoding="utf-8")
+            self.assertIn("| 子项 | 参考图 |", plan)
 
 
     def test_accepts_course_name_without_registry_id(self) -> None:
