@@ -66,12 +66,37 @@ WINDOWS_APP_PATTERNS = [
     "VMware/VMware Workstation/vmware.exe",
     "Microsoft Office/root/Office*/WINWORD.EXE",
     "Microsoft VS Code/Code.exe",
+    "Programs/Microsoft VS Code/Code.exe",
     "Microsoft SQL Server Management Studio */Common7/IDE/Ssms.exe",
     "MySQL/MySQL Workbench */MySQLWorkbench.exe",
     "Cisco Packet Tracer */bin/PacketTracer.exe",
     "Huawei/eNSP/eNSP_Client.exe",
     "Huawei/eNSP/eNSP.exe",
 ]
+
+# Products often installed outside Program Files; the registry records where.
+REGISTRY_APPS = [
+    (r"SOFTWARE\WOW6432Node\VMware, Inc.\VMware Workstation", "InstallPath", ("vmrun.exe", "vmware.exe")),
+    (r"SOFTWARE\Oracle\VirtualBox", "InstallDir", ("VBoxManage.exe", "VirtualBox.exe")),
+]
+
+
+def registry_apps() -> list[str]:
+    try:
+        import winreg
+    except ImportError:
+        return []
+
+    found = []
+    for key, value, names in REGISTRY_APPS:
+        try:
+            with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, key) as handle:
+                folder = Path(winreg.QueryValueEx(handle, value)[0])
+        except OSError:
+            # A missing key means the product is not installed.
+            continue
+        found += [str(folder / name) for name in names if (folder / name).is_file()]
+    return found
 
 
 def installed_apps(system: str) -> list[str]:
@@ -91,7 +116,7 @@ def installed_apps(system: str) -> list[str]:
         for pattern in WINDOWS_APP_PATTERNS
         for path in root.glob(pattern)
         if path.is_file()
-    })
+    } | set(registry_apps()))
 
 
 def inspect_environment() -> dict[str, object]:

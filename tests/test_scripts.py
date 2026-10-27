@@ -134,6 +134,34 @@ class ProbeEnvironmentTests(unittest.TestCase):
             self.assertEqual(apps, [str(executable)])
 
 
+    def test_finds_vmware_from_registry_install_path(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            vmrun = Path(directory) / "vmrun.exe"
+            vmrun.touch()
+
+            class FakeKey:
+                def __enter__(self):
+                    return self
+
+                def __exit__(self, *exc):
+                    return False
+
+            def open_key(root, key):
+                if "VMware Workstation" in key:
+                    return FakeKey()
+                raise FileNotFoundError(key)
+
+            fake = types.SimpleNamespace(
+                HKEY_LOCAL_MACHINE=object(),
+                OpenKey=open_key,
+                QueryValueEx=lambda handle, value: (directory, 1),
+            )
+            with patch.dict(sys.modules, {"winreg": fake}):
+                apps = probe_environment.registry_apps()
+
+            self.assertEqual(apps, [str(vmrun)])
+
+
 class WindowsBootstrapTests(unittest.TestCase):
     def test_uses_an_isolated_non_admin_runtime(self) -> None:
         script = (SKILL_DIR / "scripts/bootstrap_windows.ps1").read_text()
